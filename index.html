@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>AWS GenAI Mock Exam Trainer</title>
+  <meta name="description" content="AWS GenAI模擬試験トレーナー。一問ずつ回答・即採点・解説付き" />
+  <style>
+    :root{
+      --bg:#f3f7ff;
+      --surface:#ffffffd9;
+      --surface-solid:#ffffff;
+      --surface-2:#f6f9ff;
+      --line:#d6e2ff;
+      --text:#0f1b3d;
+      --muted:#5d6f98;
+      --brand:#2563eb;
+      --brand-2:#06b6d4;
+      --ok:#0f9f7f;
+      --bad:#dc3e68;
+      --warn:#d69208;
+      --shadow:0 22px 50px rgba(42,83,168,.14);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -20%, #c8dcff 0%, transparent 60%),
+        radial-gradient(900px 500px at 110% -10%, #d7d4ff 0%, transparent 60%),
+        var(--bg);
+      line-height:1.65;
+    }
+    .container{max-width:980px;margin:clamp(14px,4vw,36px) auto;padding:0 clamp(12px,3vw,20px) 30px}
+
+    .header{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px
+    }
+    .title{font-size:clamp(18px,3.5vw,28px);font-weight:850;letter-spacing:.2px}
+    .chip{
+      display:inline-flex;gap:8px;align-items:center;
+      border:1px solid var(--line);padding:8px 12px;border-radius:999px;
+      color:var(--muted);background:#f4f8ff
+    }
+
+    .card{
+      border:1px solid var(--line);border-radius:20px;
+      background:linear-gradient(180deg,var(--surface),var(--surface-solid));
+      backdrop-filter: blur(8px);
+      box-shadow:var(--shadow);
+      padding:clamp(14px,3vw,24px);
+    }
+
+    .meta{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .qnum{font-weight:800;color:#35508f}
+    .progress-wrap{width:100%;margin-top:8px}
+    .progress{height:9px;border-radius:999px;background:#e9f0ff;border:1px solid #d6e2ff;overflow:hidden}
+    .progress>div{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0%;transition:width .25s ease}
+
+    .question{
+      margin:16px 0 8px;
+      font-size:clamp(16px,2.6vw,21px);
+      line-height:1.72;
+      word-break:break-word;
+    }
+
+    .option-list{display:grid;gap:10px;margin-top:12px}
+    .option{
+      border:1px solid #cddcff;
+      border-radius:14px;
+      padding:12px 13px;
+      background:#f7faff;
+      color:#12224d;
+      cursor:pointer;
+      transition:transform .14s ease,border-color .14s ease,background .14s ease,box-shadow .14s ease;
+      user-select:none;
+      text-align:left;
+      font:inherit;
+    }
+    .option:hover{transform:translateY(-1px);border-color:#7ea4ff;background:#ffffff;box-shadow:0 6px 20px rgba(56,106,214,.12)}
+    .option .label{font-weight:800;color:#2f5dcc;margin-right:8px}
+    .option.disabled{pointer-events:none;opacity:.92}
+    .option.correct{border-color:var(--ok);background:rgba(45,212,191,.12)}
+    .option.wrong{border-color:var(--bad);background:rgba(251,113,133,.12)}
+    .option.muted{opacity:.65}
+
+    .result{display:none;margin-top:14px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#f8fbff;color:#11224b}
+    .result.show{display:block}
+    .result h3{margin:0 0 6px;font-size:17px}
+    .result .lead{margin:0 0 8px}
+    .result .sec-title{margin:12px 0 6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#a8bce8}
+    .result ul{margin:0;padding-left:18px}
+    .result li{margin:5px 0}
+    .result.ok{border-color:var(--ok)}
+    .result.bad{border-color:var(--bad)}
+    .result a{color:#93c5fd;text-decoration:none}
+    .result a:hover{text-decoration:underline}
+
+    .actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+    .btn{
+      border:1px solid #cbdcff;background:#f2f7ff;color:#1a2d5a;
+      border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn.primary{border:none;background:linear-gradient(90deg,#2563eb,#06b6d4)}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+
+    .hint{margin-top:8px;color:var(--muted);font-size:13px}
+
+    @media (max-width:640px){
+      .card{border-radius:16px}
+      .option{padding:11px 12px}
+      .actions{justify-content:flex-start}
+      .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div class="title">AWS GenAI Mock Exam Trainer</div>
+      <div class="chip" id="scoreChip">Score 0 / 0</div>
+    </header>
+
+    <section class="card">
+      <div class="meta">
+        <div class="qnum" id="qnum">問題 1</div>
+        <div class="chip" id="counter">1 / 10</div>
+      </div>
+      <div class="progress-wrap"><div class="progress"><div id="progressBar"></div></div></div>
+
+      <article class="question" id="questionText"></article>
+      <div class="option-list" id="options"></div>
+
+      <div class="result" id="result"></div>
+
+      <div class="actions">
+        <button class="btn primary" id="nextBtn" disabled>次の問題へ</button>
+        <button class="btn" id="restartBtn">最初から</button>
+      </div>
+      <div class="hint">選択肢をタップ/クリックすると即採点されます。※現在は1〜10問（85問は同UIで拡張可）</div>
+    </section>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      {
+        n:1,
+        question:'AWS上でGenAIアプリを開発中。ジュニア開発者がBedrock向けAPIリクエストの書き方を理解したい。IDE内でAWS SDKコードの説明や修正提案を受けたい。どのサービスを使うべきか？',
+        options:[
+          'Amazon Q Developer',
+          'Amazon CodeGuru',
+          'Amazon Bedrock Agents',
+          'Amazon Q Business'
+        ],
+        answer:0,
+        explain:'Amazon Q DeveloperはIDE統合の開発支援（コード説明・提案・AWS SDK補助）に特化。',
+        whyWrong:[
+          null,
+          'CodeGuruは主にコードレビュー/性能最適化寄りで、対話的IDE支援の主役ではない。',
+          'Bedrock Agentsは業務フロー実行・外部API連携向け。コーディング支援用途ではない。',
+          'Q Businessは企業内ナレッジ検索向けで、IDE内コード支援が主目的ではない。'
+        ],
+        refs:[
+          {label:'Amazon Q Developer',url:'https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html'}
+        ]
+      },
+      {
+        n:2,
+        question:'Step FunctionsでLambda→Bedrock→DynamoDBを連携している。遅延の原因ステップを特定したい。どのサービスを有効化すべきか？',
+        options:['AWS X-Ray','Amazon CloudWatch Logs','AWS CloudTrail','Amazon CloudWatch Metrics'],
+        answer:0,
+        explain:'X-Rayは分散トレーシングで、リクエスト経路と各区間レイテンシを可視化できる。',
+        whyWrong:[null,'ログ単体では横断トレースに手作業相関が必要。','CloudTrailはAPI監査用途。性能ボトルネック特定の主用途ではない。','メトリクスは傾向把握向けで、個別リクエスト経路追跡には弱い。'],
+        refs:[{label:'AWS X-Ray concepts',url:'https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html'}]
+      },
+      {
+        n:3,
+        question:'複数ソースから作る投資提案に対し、監査のためデータ系譜（どのデータ由来か）を追跡したい。最適な選択は？',
+        options:['AWS Glue Data Catalog','Amazon CloudWatch Logs','AWS CloudTrail','Amazon S3 Versioning'],
+        answer:0,
+        explain:'データ資産のメタデータ管理・系譜把握にはGlue Data Catalog系の設計が適する。',
+        whyWrong:[null,'ログ保管は可能だが、系譜管理の仕組みとしては不十分。','CloudTrailは操作履歴監査であり、データ由来管理そのものではない。','Versioningはオブジェクト版管理で、横断データ系譜の目的とは異なる。'],
+        refs:[{label:'AWS Glue Data Catalog',url:'https://docs.aws.amazon.com/glue/latest/dg/components-overview.html'}]
+      },
+      {
+        n:4,
+        question:'定型メールに顧客名・注文番号など可変値を差し込む再利用可能プロンプトを作る最適手法は？',
+        options:[
+          'プレースホルダー付きテンプレートを作り、実行時に差し込む',
+          '毎回ゼロからプロンプトを書く',
+          'システムメッセージに全データを入れて任せる',
+          '汎用プロンプトだけ使う'
+        ],
+        answer:0,
+        explain:'テンプレート+変数化で一貫性・保守性・再利用性を高く保てる。',
+        whyWrong:[null,'運用コストと品質ばらつきが増える。','明示的差し込み構造がなく再現性が落ちる。','個別パーソナライズ要件を満たせない。'],
+        refs:[{label:'Prompt engineering concepts (AWS)',url:'https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering.html'}]
+      },
+      {
+        n:5,
+        question:'入力しながらAI提案を即時受け取る双方向リアルタイム通信を実装したい。最適なAWSサービスは？',
+        options:['Amazon API Gateway WebSocket APIs','Amazon API Gateway REST + polling','Amazon SNS','Amazon SQS'],
+        answer:0,
+        explain:'WebSocket APIは持続接続の双方向通信向け。低遅延の対話UIに適する。',
+        whyWrong:[null,'ポーリングは遅延と無駄な呼び出しが増える。','SNSは通知配信用途で双方向対話には不向き。','SQSは非同期キューでリアルタイム対話には不向き。'],
+        refs:[{label:'API Gateway WebSocket APIs',url:'https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-overview.html'}]
+      },
+      {
+        n:6,
+        question:'大量のスキャンPDFから文字/手書き/データ抽出を行いRAG前処理したい。どのサービスを使う？',
+        options:['Amazon Comprehend','Amazon Polly','Amazon Textract','Amazon Transcribe'],
+        answer:2,
+        explain:'TextractはOCR、フォーム/テーブル抽出、手書き対応に特化した文書解析サービス。',
+        whyWrong:['Comprehendは自然言語分析（感情・エンティティ等）向け。','Pollyは音声合成サービス。',null,'Transcribeは音声文字起こしサービス。'],
+        refs:[{label:'Amazon Textract',url:'https://docs.aws.amazon.com/textract/latest/dg/what-is.html'}]
+      },
+      {
+        n:7,
+        question:'契約書生成で出力の揺れを最小化し、毎回ほぼ同じ文体・構造にしたい。temperature設定は？',
+        options:['0.5固定','低め（0.0〜0.3）','temperatureは無関係','高め（0.8〜1.0）'],
+        answer:1,
+        explain:'低temperatureほど決定的で再現性が高い。高温は多様性が上がり、ブレやすい。',
+        whyWrong:['0.5は中庸で、厳密な一貫性重視には低めが一般的。',null,'temperatureは出力多様性に影響する。','高温は創造性向けで、規定文書には不向き。'],
+        refs:[{label:'Inference parameters (Bedrock)',url:'https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html'}]
+      },
+      {
+        n:8,
+        question:'複数プロバイダFM（Anthropic/AI21/Cohere/Amazonなど）を単一APIで検証したい。サーバ管理は避けたい。最適なサービスは？',
+        options:['Amazon Bedrock','Amazon SageMaker JumpStart','Amazon Q Business','Amazon Kendra'],
+        answer:0,
+        explain:'Bedrockは複数FMへの統一APIアクセスを提供するフルマネージド基盤。',
+        whyWrong:[null,'JumpStartも有用だが、本問の「複数プロバイダFMへ統一APIで直接アクセス」の中心はBedrock。','Q Businessは企業内情報アシスタント用途。','Kendraは検索サービス。'],
+        refs:[{label:'What is Amazon Bedrock?',url:'https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html'}]
+      },
+      {
+        n:9,
+        question:'チャット応答生成機能と意味検索機能をTitanで作る。正しいモデル組み合わせは？',
+        options:['Embeddingsを両方','Textを両方','Text(チャット)+Embeddings(検索)','Embeddings(チャット)+Text(検索)'],
+        answer:2,
+        explain:'生成はTextモデル、意味類似検索はEmbeddingモデルが定石。',
+        whyWrong:['Embeddingsは生成用途に不適。','Textだけでは意味検索のベクトル化目的に合わない。',null,'役割が逆。'],
+        refs:[{label:'Amazon Titan models',url:'https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html'}]
+      },
+      {
+        n:10,
+        question:'有害コンテンツ遮断、PIIマスキング、禁止トピック制御を複数FMに一貫適用したい。使うべき機能は？',
+        options:['Amazon Bedrock Guardrails','Amazon Bedrock Knowledge Bases','Amazon Bedrock Agents','Amazon Bedrock Prompt Management'],
+        answer:0,
+        explain:'Guardrailsは安全ポリシー（有害カテゴリ・PII・拒否トピック等）の一貫適用に使う。',
+        whyWrong:[null,'Knowledge BasesはRAG向け。安全制御の主機能ではない。','Agentsはツール実行や推論フロー向け。','Prompt Managementはプロンプト資産管理向け。'],
+        refs:[{label:'Guardrails for Amazon Bedrock',url:'https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html'}]
+      }
+    ];
+
+    const L = ['A','B','C','D'];
+    let index = 0;
+    let score = 0;
+    let answered = 0;
+    let locked = false;
+
+    const el = {
+      qnum: document.getElementById('qnum'),
+      counter: document.getElementById('counter'),
+      progressBar: document.getElementById('progressBar'),
+      questionText: document.getElementById('questionText'),
+      options: document.getElementById('options'),
+      result: document.getElementById('result'),
+      nextBtn: document.getElementById('nextBtn'),
+      restartBtn: document.getElementById('restartBtn'),
+      scoreChip: document.getElementById('scoreChip')
+    };
+
+    function escapeHtml(s=''){
+      return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+    }
+
+    function renderQuestion(){
+      const q = QUESTIONS[index];
+      locked = false;
+      el.result.className = 'result';
+      el.result.innerHTML = '';
+      el.qnum.textContent = `問題 ${q.n}`;
+      el.counter.textContent = `${index+1} / ${QUESTIONS.length}`;
+      el.progressBar.style.width = `${(index/QUESTIONS.length)*100}%`;
+      el.questionText.textContent = q.question;
+      el.nextBtn.disabled = true;
+
+      el.options.innerHTML = q.options.map((txt, i)=>`
+        <button class="option" data-i="${i}" aria-label="${L[i]} ${escapeHtml(txt)}">
+          <span class="label">${L[i]}.</span>${escapeHtml(txt)}
+        </button>
+      `).join('');
+
+      [...el.options.querySelectorAll('.option')].forEach(btn=>{
+        btn.addEventListener('click', ()=>judge(Number(btn.dataset.i)));
+      });
+    }
+
+    function judge(selected){
+      if(locked) return;
+      locked = true;
+
+      const q = QUESTIONS[index];
+      answered++;
+      const isCorrect = selected === q.answer;
+      if(isCorrect) score++;
+
+      const optionEls = [...el.options.querySelectorAll('.option')];
+      optionEls.forEach((op, i)=>{
+        op.classList.add('disabled');
+        if(i===q.answer) op.classList.add('correct');
+        else if(i===selected) op.classList.add('wrong');
+        else op.classList.add('muted');
+      });
+
+      const wrongNotes = q.whyWrong
+        .map((msg, i)=> ({msg, i}))
+        .filter(x=> x.msg && x.i !== q.answer)
+        .map(x=> `<li><strong>${L[x.i]}:</strong> ${escapeHtml(x.msg)}</li>`)
+        .join('');
+
+      const refs = (q.refs||[]).map(r=>`<li><a href="${r.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(r.label)}</a></li>`).join('');
+
+      el.result.className = `result show ${isCorrect ? 'ok' : 'bad'}`;
+      el.result.innerHTML = `
+        <h3>${isCorrect ? '✅ 正解' : '❌ 不正解'}（正解: ${L[q.answer]}）</h3>
+        <p class="lead">${escapeHtml(q.explain)}</p>
+
+        <div class="sec-title">誤答の理由</div>
+        <ul>${wrongNotes || '<li>この問題は補足なし</li>'}</ul>
+
+        <div class="sec-title">参考ドキュメント</div>
+        <ul>${refs || '<li>なし</li>'}</ul>
+      `;
+
+      el.scoreChip.textContent = `Score ${score} / ${answered}`;
+      el.nextBtn.disabled = false;
+      if(index === QUESTIONS.length - 1){
+        el.nextBtn.textContent = '結果を見る';
+      }
+    }
+
+    function next(){
+      if(index < QUESTIONS.length - 1){
+        index++;
+        renderQuestion();
+        return;
+      }
+      finish();
+    }
+
+    function finish(){
+      const percent = Math.round((score/QUESTIONS.length)*100);
+      el.progressBar.style.width = '100%';
+      el.qnum.textContent = '試験結果';
+      el.counter.textContent = `${QUESTIONS.length} / ${QUESTIONS.length}`;
+      el.questionText.innerHTML = `終了！ <strong>${score}/${QUESTIONS.length}</strong> 正解（${percent}%）`;
+      el.options.innerHTML = '';
+      el.result.className = 'result show';
+      el.result.innerHTML = `
+        <h3>おつかれさま！</h3>
+        <p class="lead">次は85問版に拡張して、弱点カテゴリ別の復習モードも追加できます。</p>
+      `;
+      el.nextBtn.disabled = true;
+    }
+
+    function restart(){
+      index = 0; score = 0; answered = 0; locked = false;
+      el.scoreChip.textContent = 'Score 0 / 0';
+      el.nextBtn.textContent = '次の問題へ';
+      renderQuestion();
+    }
+
+    el.nextBtn.addEventListener('click', next);
+    el.restartBtn.addEventListener('click', restart);
+
+    renderQuestion();
+  </script>
+</body>
+</html>

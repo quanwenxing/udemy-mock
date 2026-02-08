@@ -43,6 +43,25 @@ This is a pure static app and can be deployed directly to:
 
 No build step required.
 
+### Vercel quick deploy
+
+This repo includes `vercel.json` for static hosting defaults.
+
+```bash
+# in this folder
+npm i -g vercel
+vercel login
+vercel
+# production deploy
+vercel --prod
+```
+
+Suggested Vercel settings:
+- Framework Preset: **Other**
+- Build Command: *(empty)*
+- Output Directory: *(empty / root)*
+
+
 ## Local run
 
 From this folder:

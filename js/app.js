@@ -9,6 +9,7 @@ const state = {
   score: 0,
   answered: 0,
   locked: false,
+  selected: new Set(),
 };
 
 const el = {
@@ -17,8 +18,10 @@ const el = {
   counter: document.getElementById('counter'),
   progressBar: document.getElementById('progressBar'),
   questionText: document.getElementById('questionText'),
+  questionMeta: document.getElementById('questionMeta'),
   options: document.getElementById('options'),
   result: document.getElementById('result'),
+  checkBtn: document.getElementById('checkBtn'),
   nextBtn: document.getElementById('nextBtn'),
   restartBtn: document.getElementById('restartBtn'),
   scoreChip: document.getElementById('scoreChip'),
@@ -30,6 +33,30 @@ function escapeHtml(s = '') {
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
+}
+
+function getAnswers(q) {
+  return Array.isArray(q.answer) ? [...q.answer] : [q.answer];
+}
+
+function isMultiSelect(q) {
+  return getAnswers(q).length > 1;
+}
+
+function requiredSelections(q) {
+  return getAnswers(q).length;
+}
+
+function getWhyWrong(q, index) {
+  return (q.whyWrong || [])[index] || 'この選択肢は設問の要件を満たしません。';
+}
+
+function setsMatch(a, b) {
+  if (a.size !== b.size) return false;
+  for (const item of a) {
+    if (!b.has(item)) return false;
+  }
+  return true;
 }
 
 async function loadTests() {
@@ -46,61 +73,137 @@ function currentTest() {
   return state.tests[state.testIndex];
 }
 
+function updateCheckButton() {
+  const q = currentTest().questions[state.questionIndex];
+  const needed = requiredSelections(q);
+  const selectedCount = state.selected.size;
+
+  if (!isMultiSelect(q) || state.locked) {
+    el.checkBtn.hidden = true;
+    el.checkBtn.disabled = true;
+    return;
+  }
+
+  el.checkBtn.hidden = false;
+  el.checkBtn.disabled = selectedCount !== needed;
+  el.checkBtn.textContent = `回答をチェック (${selectedCount}/${needed})`;
+}
+
 function renderQuestion() {
   const test = currentTest();
   const q = test.questions[state.questionIndex];
+  const multi = isMultiSelect(q);
+  const needed = requiredSelections(q);
 
   state.locked = false;
+  state.selected = new Set();
   el.result.className = 'result';
   el.result.innerHTML = '';
   el.nextBtn.disabled = true;
+  el.nextBtn.textContent = '次の問題へ';
 
   el.qnum.textContent = `${test.title} - 問題 ${q.n}`;
   el.counter.textContent = `${state.questionIndex + 1} / ${test.questions.length}`;
   el.progressBar.style.width = `${(state.questionIndex / test.questions.length) * 100}%`;
   el.questionText.textContent = q.question;
+  el.questionMeta.textContent = multi
+    ? `複数選択問題: ${needed}つ選んでから採点します。`
+    : '単一選択問題: 選ぶとその場で採点します。';
 
   el.options.innerHTML = q.options
     .map(
       (txt, i) =>
-        `<button class="option" data-i="${i}" aria-label="${labelFor(i)} ${escapeHtml(txt)}"><span class="label">${labelFor(i)}.</span>${escapeHtml(
+        `<button class="option" data-i="${i}" aria-pressed="false" aria-label="${labelFor(i)} ${escapeHtml(txt)}"><span class="label">${labelFor(i)}.</span>${escapeHtml(
           txt,
         )}</button>`,
     )
     .join('');
 
   [...el.options.querySelectorAll('.option')].forEach((btn) => {
-    btn.addEventListener('click', () => judge(Number(btn.dataset.i)));
+    btn.addEventListener('click', () => selectOption(Number(btn.dataset.i)));
   });
+
+  updateCheckButton();
 }
 
-function judge(selected) {
+function selectOption(index) {
   if (state.locked) return;
-  state.locked = true;
+
+  const q = currentTest().questions[state.questionIndex];
+  const optionEls = [...el.options.querySelectorAll('.option')];
+
+  if (!isMultiSelect(q)) {
+    state.selected = new Set([index]);
+    optionEls.forEach((op, i) => {
+      op.classList.toggle('selected', i === index);
+      op.setAttribute('aria-pressed', i === index ? 'true' : 'false');
+    });
+    judge();
+    return;
+  }
+
+  if (state.selected.has(index)) state.selected.delete(index);
+  else if (state.selected.size < requiredSelections(q)) state.selected.add(index);
+  else {
+    const first = [...state.selected][0];
+    state.selected.delete(first);
+    state.selected.add(index);
+  }
+
+  optionEls.forEach((op, i) => {
+    const active = state.selected.has(i);
+    op.classList.toggle('selected', active);
+    op.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+
+  updateCheckButton();
+}
+
+function buildOptionReview(q, correctAnswers, selectedAnswers) {
+  return q.options
+    .map((opt, i) => {
+      const isCorrect = correctAnswers.has(i);
+      const isSelected = selectedAnswers.has(i);
+      const status = isCorrect
+        ? '正解選択肢'
+        : isSelected
+          ? '選択した誤答'
+          : '未選択の誤答';
+      const note = isCorrect ? q.explain || '正解理由の補足はありません。' : getWhyWrong(q, i);
+      return `<li><strong>${labelFor(i)} (${status}):</strong> ${escapeHtml(note)}</li>`;
+    })
+    .join('');
+}
+
+function judge() {
+  if (state.locked) return;
 
   const test = currentTest();
   const q = test.questions[state.questionIndex];
+  const correctAnswers = new Set(getAnswers(q));
+  const selectedAnswers = new Set(state.selected);
 
+  if (selectedAnswers.size === 0) return;
+  if (isMultiSelect(q) && selectedAnswers.size !== correctAnswers.size) return;
+
+  state.locked = true;
   state.answered += 1;
-  const isCorrect = selected === q.answer;
+
+  const isCorrect = setsMatch(selectedAnswers, correctAnswers);
   if (isCorrect) state.score += 1;
 
   const optionEls = [...el.options.querySelectorAll('.option')];
   optionEls.forEach((op, i) => {
     op.classList.add('disabled');
-    if (i === q.answer) op.classList.add('correct');
-    else if (i === selected) op.classList.add('wrong');
-    else op.classList.add('muted');
-  });
+    op.classList.remove('selected');
+    op.setAttribute('aria-pressed', selectedAnswers.has(i) ? 'true' : 'false');
 
-  const wrongNotes = q.options
-    .map((_, i) => {
-      if (i === q.answer) return null;
-      const msg = (q.whyWrong || [])[i] || 'この選択肢は要件との整合性が低く、AWS推奨パターンから外れます。';
-      return `<li><strong>${labelFor(i)}:</strong> ${escapeHtml(msg)}</li>`;
-    })
-    .filter(Boolean)
-    .join('');
+    if (correctAnswers.has(i)) op.classList.add('correct');
+    else if (selectedAnswers.has(i)) op.classList.add('wrong');
+    else op.classList.add('muted');
+
+    if (correctAnswers.has(i) && !selectedAnswers.has(i)) op.classList.add('missed');
+  });
 
   const refs = (q.refs || [])
     .map(
@@ -111,17 +214,24 @@ function judge(selected) {
     )
     .join('');
 
+  const correctLabel = getAnswers(q).map((i) => labelFor(i)).join(', ');
+  const selectedLabel = [...selectedAnswers].map((i) => labelFor(i)).join(', ');
+
   el.result.className = `result show ${isCorrect ? 'ok' : 'bad'}`;
   el.result.innerHTML = `
-    <h3>${isCorrect ? '✅ 正解' : '❌ 不正解'}（正解: ${labelFor(q.answer)}）</h3>
-    <p>${escapeHtml(q.explain || 'AWS公式ドキュメントを参照して確認してください。')}</p>
-    <div class="sec-title">誤答の理由</div>
-    <ul>${wrongNotes || '<li>補足なし</li>'}</ul>
+    <h3>${isCorrect ? '✅ 正解' : '❌ 不正解'}（正解: ${correctLabel}）</h3>
+    <p>${isMultiSelect(q) ? `あなたの回答: ${selectedLabel}` : `あなたの回答: ${selectedLabel || '未回答'}`}</p>
+    <div class="sec-title">正解の理由</div>
+    <p>${escapeHtml(q.explain || '正解理由の補足はありません。')}</p>
+    <div class="sec-title">選択肢ごとの解説</div>
+    <ul>${buildOptionReview(q, correctAnswers, selectedAnswers)}</ul>
     <div class="sec-title">参考ドキュメント</div>
     <ul>${refs || '<li>なし</li>'}</ul>
   `;
 
   el.scoreChip.textContent = `Score ${state.score} / ${state.answered}`;
+  el.checkBtn.hidden = true;
+  el.checkBtn.disabled = true;
   el.nextBtn.disabled = false;
   el.nextBtn.textContent =
     state.questionIndex === test.questions.length - 1 ? '結果を見る' : '次の問題へ';
@@ -136,9 +246,12 @@ function finish() {
   el.qnum.textContent = `${test.title} - 結果`;
   el.counter.textContent = `${total} / ${total}`;
   el.questionText.innerHTML = `終了！ <strong>${state.score}/${total}</strong> 正解（${percent}%）`;
+  el.questionMeta.textContent = '別の Practice Test に切り替えて続けて練習できます。';
   el.options.innerHTML = '';
   el.result.className = 'result show';
   el.result.innerHTML = '<h3>おつかれさまでした！</h3><p>別のPractice Testに切り替えて続けて練習できます。</p>';
+  el.checkBtn.hidden = true;
+  el.checkBtn.disabled = true;
   el.nextBtn.disabled = true;
 }
 
@@ -157,8 +270,8 @@ function resetCurrentTest() {
   state.score = 0;
   state.answered = 0;
   state.locked = false;
+  state.selected = new Set();
   el.scoreChip.textContent = 'Score 0 / 0';
-  el.nextBtn.textContent = '次の問題へ';
   renderQuestion();
 }
 
@@ -169,6 +282,7 @@ function switchTest(i) {
 
 function bindEvents() {
   el.testSelect.addEventListener('change', (e) => switchTest(Number(e.target.value)));
+  el.checkBtn.addEventListener('click', judge);
   el.nextBtn.addEventListener('click', next);
   el.restartBtn.addEventListener('click', resetCurrentTest);
 }

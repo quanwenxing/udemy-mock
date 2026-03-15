@@ -107,6 +107,13 @@ body {
   word-break: break-word;
 }
 
+.question-meta {
+  margin: 0 0 12px;
+  color: #4f67a5;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .option-list { display: grid; gap: 10px; margin-top: 12px; }
 .option {
   border: 1px solid #cddcff;
@@ -116,14 +123,26 @@ body {
   padding: 12px 13px;
   cursor: pointer;
   text-align: left;
-  transition: transform .14s ease, border-color .14s ease, background .14s ease;
+  transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
 }
 .option:hover { transform: translateY(-1px); border-color: #7ea4ff; background: #fff; }
 .option .label { font-weight: 800; color: #2f5dcc; margin-right: 8px; }
+.option.selected {
+  border-color: var(--brand);
+  background: rgba(37, 99, 235, .1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
 .option.disabled { pointer-events: none; opacity: .92; }
 .option.correct { border-color: var(--ok); background: rgba(45, 212, 191, .12); }
 .option.wrong { border-color: var(--bad); background: rgba(251, 113, 133, .12); }
+.option.missed {
+  box-shadow: inset 0 0 0 2px rgba(15, 159, 127, .25);
+}
 .option.muted { opacity: .65; }
+.option.muted .label { color: #6b7fae; }
+.option.correct .label { color: #0f9f7f; }
+.option.wrong .label { color: #dc3e68; }
+.option.missed .label { color: #0f9f7f; }
 
 .result { display: none; margin-top: 14px; border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #f8fbff; }
 .result.show { display: block; }

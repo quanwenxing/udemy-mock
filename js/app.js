@@ -1,4 +1,6 @@
-const L = ['A', 'B', 'C', 'D'];
+function labelFor(index) {
+  return String.fromCharCode(65 + index);
+}
 
 const state = {
   tests: [],
@@ -61,7 +63,7 @@ function renderQuestion() {
   el.options.innerHTML = q.options
     .map(
       (txt, i) =>
-        `<button class="option" data-i="${i}" aria-label="${L[i]} ${escapeHtml(txt)}"><span class="label">${L[i]}.</span>${escapeHtml(
+        `<button class="option" data-i="${i}" aria-label="${labelFor(i)} ${escapeHtml(txt)}"><span class="label">${labelFor(i)}.</span>${escapeHtml(
           txt,
         )}</button>`,
     )
@@ -95,7 +97,7 @@ function judge(selected) {
     .map((_, i) => {
       if (i === q.answer) return null;
       const msg = (q.whyWrong || [])[i] || 'この選択肢は要件との整合性が低く、AWS推奨パターンから外れます。';
-      return `<li><strong>${L[i]}:</strong> ${escapeHtml(msg)}</li>`;
+      return `<li><strong>${labelFor(i)}:</strong> ${escapeHtml(msg)}</li>`;
     })
     .filter(Boolean)
     .join('');
@@ -111,7 +113,7 @@ function judge(selected) {
 
   el.result.className = `result show ${isCorrect ? 'ok' : 'bad'}`;
   el.result.innerHTML = `
-    <h3>${isCorrect ? '✅ 正解' : '❌ 不正解'}（正解: ${L[q.answer]}）</h3>
+    <h3>${isCorrect ? '✅ 正解' : '❌ 不正解'}（正解: ${labelFor(q.answer)}）</h3>
     <p>${escapeHtml(q.explain || 'AWS公式ドキュメントを参照して確認してください。')}</p>
     <div class="sec-title">誤答の理由</div>
     <ul>${wrongNotes || '<li>補足なし</li>'}</ul>

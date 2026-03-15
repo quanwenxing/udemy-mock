@@ -1,0 +1,2436 @@
+{
+  "version": 1,
+  "updatedAt": "2026-02-08T12:08:02.858Z",
+  "tests": [
+    {
+      "id": "practice-1",
+      "title": "模擬試験 1",
+      "description": "模擬テスト 1 演習セット",
+      "questions": [
+        {
+          "n": 1,
+          "question": "Bedrock基礎モデルはどのパターンでアクセスされますか?",
+          "options": [
+            "複数のプロバイダーに対する単一の管理対象 API",
+            "EC2 SSH をモデルホストに直接接続する",
+            "SageMaker ノートブック カーネルのみ",
+            "CloudTrail イベントのリプレイ"
+          ],
+          "answer": 0,
+          "explain": "Amazon Bedrock は、1 つのサービス エンドポイントから複数のモデル プロバイダーへのマネージド API アクセスを提供します。",
+          "whyWrong": [
+            "モデル ホストへの SSH アクセスは、Bedrock の使用方法ではありません。",
+            "ノートブック カーネルはオプションのツールであり、Bedrock アクセス モデルではありません。",
+            "CloudTrail は監査用であり、モデル推論のトランスポート用ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "question": "RAG でのセマンティック検索には、どのモデル タイプが最適ですか?",
+          "options": [
+            "画像生成モデル",
+            "埋め込みモデル",
+            "音声テキスト変換モデル",
+            "テキスト分類エンドポイント"
+          ],
+          "answer": 1,
+          "explain": "埋め込みは、テキストをベクトル ストアでの類似性検索に使用されるベクトルに変換します。",
+          "whyWrong": [
+            "画像の生成は、テキストの類似性インデックス付けとは無関係です。",
+            null,
+            "Speech-to-Text は、セマンティックなベクトル化ではなく、音声を文字に変換します。",
+            "分類エンドポイントは、検索ベクトルではなく、ラベルを返します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "question": "どの Bedrock 機能がトピック制限と PII 処理を強制しますか?",
+          "options": [
+            "知識ベース",
+            "エージェント",
+            "ガードレール",
+            "即時キャッシュ"
+          ],
+          "answer": 2,
+          "explain": "ガードレールは、サポートされているモデル全体でブロックされたトピック、コンテンツ フィルター、機密情報の制御を定義します。",
+          "whyWrong": [
+            "ナレッジベースは、安全性ポリシーではなく、検索コンテキストを処理します。",
+            "エージェントは、中核となるモデレーション ポリシーではなく、ツールとワークフローを調整します。",
+            null,
+            "プロンプト キャッシュは遅延/コスト機能であり、ポリシー制御ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "question": "Lambda と API ゲートウェイにわたるエンドツーエンドのリクエスト レイテンシー トレースが必要です。使用：",
+          "options": [
+            "クラウドトレイル レイク",
+            "AWS X-Ray",
+            "IAMアクセスアナライザー",
+            "信頼できるアドバイザー"
+          ],
+          "answer": 1,
+          "explain": "AWS X-Ray は、遅延ボトルネック分析のための分散トレーシングとサービス マップを提供します。",
+          "whyWrong": [
+            "CloudTrail Lake は監査クエリ分析用です。",
+            null,
+            "Access Analyzer は、ポリシーの公開結果を検出するためのものです。",
+            "Trusted Advisor は、トレースではなく、ベスト プラクティスのチェックを提供します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "question": "前処理のために PDF から表、フォーム、テキストを抽出するサービスはどれですか?",
+          "options": [
+            "Amazon Textract",
+            "Amazon Polly",
+            "Amazon Rekognition カスタムラベル",
+            "AWS グルー"
+          ],
+          "answer": 0,
+          "explain": "Amazon Textract は、OCR およびフォーム/テーブルを含む構造化ドキュメントの抽出専用に構築されています。",
+          "whyWrong": [
+            null,
+            "Polly はテキスト読み上げです。",
+            "Rekognition Custom Labels は、画像/ビデオ オブジェクトのラベル付けに使用します。",
+            "Glue は ETL/カタログ サービスであり、OCR 抽出ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/textract/latest/dg/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "question": "確定的な出力に最適な低分散設定はどれですか?",
+          "options": [
+            "高温 (0.9+)",
+            "低温（0.0～0.3）",
+            "Top-k 最大値のみ",
+            "システムプロンプトが表示されない"
+          ],
+          "answer": 1,
+          "explain": "温度が低いとランダム性が減り、ポリシー/契約出力の一貫性が向上します。",
+          "whyWrong": [
+            "温度が高いほど、創造性と変化が高まります。",
+            null,
+            "Top-k だけでは温度挙動制御に代わるものではありません。",
+            "システム プロンプトは、動作の制約にとって依然として重要です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "question": "SDK およびインフラストラクチャ スニペットには、IDE ネイティブの AWS コーディング アシスタントが必要です。",
+          "options": [
+            "Amazon Q Developer",
+            "Amazon Q Business",
+            "AWS アーティファクト",
+            "CodeCommit 承認ルール"
+          ],
+          "answer": 0,
+          "explain": "Amazon Q Developer は、コード、AWS APIs、開発ワークフローを支援するために IDEs に統合されています。",
+          "whyWrong": [
+            null,
+            "Q Business は、データ ソースを介したエンタープライズ ナレッジ チャット用です。",
+            "Artifact はコーディング支援ではなく、コンプライアンス レポートを提供します。",
+            "承認ルールはリポジトリのガバナンス機能です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "question": "プロンプトエンリッチメントジョブと推論ジョブを非同期に分離するには、以下を使用します。",
+          "options": [
+            "Amazon SQS",
+            "AWS WAF",
+            "Amazon Route 53 ヘルスチェック",
+            "AWS 組織"
+          ],
+          "answer": 0,
+          "explain": "Amazon SQS は、プロデューサー サービスとコンシューマー サービス間の分離された非同期処理を有効にします。",
+          "whyWrong": [
+            null,
+            "WAF は Web リクエストをフィルタリングします。それは行列ではありません。",
+            "Route 53 ヘルスチェックは、DNS 可用性メカニズムです。",
+            "組織はアカウントのガバナンスを処理します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "question": "ライフサイクル ルールを備えた不変のプロンプト/レスポンス アーカイブに最も一般的なストレージはどれですか?",
+          "options": [
+            "Amazon S3",
+            "Amazon ElastiCache",
+            "EBS ローカル スナップショットのみ",
+            "Cloud9環境ストレージ"
+          ],
+          "answer": 0,
+          "explain": "Amazon S3 は、ライフサイクル ポリシーとコンプライアンスに配慮したアーカイブ パターンを備えた耐久性の高いオブジェクト ストレージを提供します。",
+          "whyWrong": [
+            null,
+            "ElastiCache はメモリ内にあり、永続的なアーカイブ用ではありません。",
+            "EBS スナップショットはボリューム バックアップであり、プライマリ アーカイブ ワークフローではありません。",
+            "Cloud9 ローカル ストレージは開発環境にとっては一時的なものです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "question": "カスタムアプリのメトリクスとトークン使用量のアラームを監視するのに最適なサービスは何ですか?",
+          "options": [
+            "CloudWatch メトリクス/アラーム",
+            "AWS シールド アドバンスト",
+            "Amazon Macie",
+            "AWS 予算のみ"
+          ],
+          "answer": 0,
+          "explain": "CloudWatch カスタムメトリクスとアラームは、ランタイム KPI の監視とアラートの標準です。",
+          "whyWrong": [
+            null,
+            "シールドは DDoS 防御です。",
+            "Macie は S3 で機密データを発見します。",
+            "Budgets は支出を追跡しますが、ほぼリアルタイムのアプリ テレメトリではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "question": "アプリケーションに一時的な AWS 認証情報を提供する ID サービスはどれですか?",
+          "options": [
+            "AWS STS",
+            "AWS RAM",
+            "AWS IQ",
+            "IAMアクセスアドバイザー"
+          ],
+          "answer": 0,
+          "explain": "AWS STS は、フェデレーションおよびロールベースのアクセス パターン用の一時的なセキュリティ認証情報を発行します。",
+          "whyWrong": [
+            null,
+            "RAM は、資格情報ではなく、アカウント間でリソースを共有します。",
+            "IQ はコンサルティング マーケットプレイスです。",
+            "アクセス アドバイザは、サービスの最終アクセス情報を表示します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "question": "VPC ワークロードから Bedrock APIs へのプライベート ネットワーク アクセスが必要です。使用：",
+          "options": [
+            "VPC エンドポイント (PrivateLink がサポートされている場合)",
+            "パブリックNATのみ",
+            "S3 静的 Web サイトエンドポイント",
+            "Route 53 リゾルバー DNS ファイアウォールのみ"
+          ],
+          "answer": 0,
+          "explain": "インターフェイス VPC エンドポイント/PrivateLink パターンは、パブリック インターネットを経由せずにプライベート接続を提供します。",
+          "whyWrong": [
+            null,
+            "NAT は引き続きパブリック エンドポイントに出力されます。",
+            "S3 Web サイトのエンドポイントは、Bedrock API アクセスとは無関係です。",
+            "DNS ファイアウォールはトランスポート接続を作成しません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "question": "Bedrock でアクション オーケストレーションを使用してツールを使用した会話型ワークフローを構築するには:",
+          "options": [
+            "ナレッジベースのみ",
+            "ガードレールのみ",
+            "Amazon Bedrock のエージェント",
+            "CloudFormation スタックセット"
+          ],
+          "answer": 2,
+          "explain": "エージェントは複数ステップの推論を調整し、ツール/APIs を呼び出してユーザーの意図を実現します。",
+          "whyWrong": [
+            "ナレッジベースは検索コンテキストを提供しますが、広範なオーケストレーションは提供しません。",
+            "ガードレールは、アクションのオーケストレーションではなく、安全制御を適用します。",
+            null,
+            "StackSet はインフラストラクチャをデプロイするものであり、関連性はありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+            }
+          ]
+        },
+        {
+          "n": 14,
+          "question": "サーバーレス クイズ アプリの低レイテンシの Key-Value セッション状態に最適なデータストア:",
+          "options": [
+            "Amazon DynamoDB",
+            "Amazon ネプチューン",
+            "AWSバックアップボールト",
+            "Amazon赤方偏移"
+          ],
+          "answer": 0,
+          "explain": "DynamoDB は、セッションとメタデータの状態に最適な、フルマネージドの低レイテンシ NoSQL データストアです。",
+          "whyWrong": [
+            null,
+            "Neptune は、リレーションシップを重視したクエリ用のグラフ データベースです。",
+            "バックアップ コンテナーには、アクティブなセッション データではなくバックアップが保存されます。",
+            "Redshift は分析用のカラム型データ ウェアハウスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 15,
+          "question": "OpenSearch と統合されたマネージド ベクター機能を提供するサービスはどれですか?",
+          "options": [
+            "OpenSearch ベクトル エンジン",
+            "AWS Glue クローラー",
+            "Kinesis Data Firehose のみ",
+            "CloudFront の機能"
+          ],
+          "answer": 0,
+          "explain": "Amazon OpenSearch Service は、セマンティック検索のユースケースのベクトル検索をサポートしています。",
+          "whyWrong": [
+            null,
+            "Glue クローラーはデータをカタログします。ベクトル類似性クエリには対応しません。",
+            "Firehose はインジェスト配信サービスです。",
+            "CloudFront 関数は、ベクター DB 操作ではなく、エッジ JS を実行します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 16,
+          "question": "サーバーを管理せずに定期的な評価ジョブをスケジュールするには:",
+          "options": [
+            "Amazon EventBridge スケジューラ",
+            "EC2 ユーザーデータループ",
+            "手動 CLI の実行",
+            "IAMポリシーシミュレータ"
+          ],
+          "answer": 0,
+          "explain": "EventBridge スケジューラは、管理対象サービスとして cron/rate スケジュール上のターゲットを呼び出します。",
+          "whyWrong": [
+            null,
+            "EC2 ループにより、運用の負担が増大し、信頼性が低下します。",
+            "手動 CLI の実行はスケーラブルな操作ではありません。",
+            "ポリシー シミュレーターは IAM テスト用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html"
+            }
+          ]
+        },
+        {
+          "n": 17,
+          "question": "集中化された API 監査証跡 (誰がいつ何を呼び出したか) の場合、主なサービスは次のとおりです。",
+          "options": [
+            "AWS CloudTrail",
+            "AWS Config 準拠パック",
+            "CloudWatch RUM",
+            "コードアーティファクト"
+          ],
+          "answer": 0,
+          "explain": "CloudTrail は、ガバナンスと調査のために AWS サービス全体で API イベントを記録します。",
+          "whyWrong": [
+            null,
+            "Config は、リソース構成の状態/コンプライアンスを追跡します。",
+            "RUM は Web アプリのクライアント メトリックを収集します。",
+            "CodeArtifact はパッケージ リポジトリ サービスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            }
+          ]
+        },
+        {
+          "n": 18,
+          "question": "HTTPS + CDN を使用して静的 SPA クイズ アプリをグローバルに配信する最良の方法:",
+          "options": [
+            "Amazon CloudFront + S3",
+            "1 つのリージョンに単一の EC2",
+            "Route 53 パブリックゾーンのみ",
+            "AWSバッチ"
+          ],
+          "answer": 0,
+          "explain": "S3 静的アセットを備えた CloudFront は、グローバルな低遅延の静的 Web 配信の標準です。",
+          "whyWrong": [
+            null,
+            "単一リージョン EC2 には CDN エッジの高速化/復元力がありません。",
+            "Route 53 DNS だけではアプリアセットをホストしません。",
+            "バッチは、Web ホスティングではなく、コンピューティング ジョブのスケジューリング用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 19,
+          "question": "ローテーションをサポートする外部 API キーのシークレットが必要です:",
+          "options": [
+            "AWS Secrets Manager",
+            "システムマネージャーのインベントリ",
+            "ログ内のパラメータ履歴",
+            "git にコミットされた Lambda 環境変数"
+          ],
+          "answer": 0,
+          "explain": "Secrets Manager はシークレットを安全に保存し、自動ローテーション パターンをサポートします。",
+          "whyWrong": [
+            null,
+            "インベントリは、シークレットではなくソフトウェアのメタデータを追跡します。",
+            "ログは安全な秘密の保存場所ではありません。",
+            "env 値のコミットは安全ではなく、準拠していません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"
+            }
+          ]
+        },
+        {
+          "n": 20,
+          "question": "Bedrock の企業ドキュメントで回答を根拠付ける場合は、次を使用します。",
+          "options": [
+            "Amazon Bedrock のナレッジベース",
+            "プロンプトの長さのみが増加します",
+            "CloudTrail インサイト",
+            "Athena フェデレーションクエリのみ"
+          ],
+          "answer": 0,
+          "explain": "ナレッジ ベースは、RAG の取り込み、埋め込み、取得、および拡張フローを管理します。",
+          "whyWrong": [
+            null,
+            "取得のない長いプロンプトは脆弱で高価です。",
+            "CloudTrail Insights は異常な API アクティビティを検出します。",
+            "Athena クエリは分析であり、Bedrock の直接取得オーケストレーションではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice-2",
+      "title": "模擬試験2",
+      "description": "模擬テスト 2 演習セット",
+      "questions": [
+        {
+          "n": 1,
+          "question": "Lambda と API ゲートウェイにわたるエンドツーエンドのリクエスト レイテンシー トレースが必要です。使用：",
+          "options": [
+            "クラウドトレイル レイク",
+            "AWS X-Ray",
+            "IAMアクセスアナライザー",
+            "信頼できるアドバイザー"
+          ],
+          "answer": 1,
+          "explain": "AWS X-Ray は、遅延ボトルネック分析のための分散トレーシングとサービス マップを提供します。",
+          "whyWrong": [
+            "CloudTrail Lake は監査クエリ分析用です。",
+            null,
+            "Access Analyzer は、ポリシーの公開結果を検出するためのものです。",
+            "Trusted Advisor は、トレースではなく、ベスト プラクティスのチェックを提供します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "question": "前処理のために PDF から表、フォーム、テキストを抽出するサービスはどれですか?",
+          "options": [
+            "Amazon Textract",
+            "Amazon Polly",
+            "Amazon Rekognition カスタムラベル",
+            "AWS グルー"
+          ],
+          "answer": 0,
+          "explain": "Amazon Textract は、OCR およびフォーム/テーブルを含む構造化ドキュメントの抽出専用に構築されています。",
+          "whyWrong": [
+            null,
+            "Polly はテキスト読み上げです。",
+            "Rekognition Custom Labels は、画像/ビデオ オブジェクトのラベル付けに使用します。",
+            "Glue は ETL/カタログ サービスであり、OCR 抽出ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/textract/latest/dg/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "question": "確定的な出力に最適な低分散設定はどれですか?",
+          "options": [
+            "高温 (0.9+)",
+            "低温（0.0～0.3）",
+            "Top-k 最大値のみ",
+            "システムプロンプトが表示されない"
+          ],
+          "answer": 1,
+          "explain": "温度が低いとランダム性が減り、ポリシー/契約出力の一貫性が向上します。",
+          "whyWrong": [
+            "温度が高いほど、創造性と変化が高まります。",
+            null,
+            "Top-k だけでは温度挙動制御に代わるものではありません。",
+            "システム プロンプトは、動作の制約にとって依然として重要です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "question": "SDK およびインフラストラクチャ スニペットには、IDE ネイティブの AWS コーディング アシスタントが必要です。",
+          "options": [
+            "Amazon Q Developer",
+            "Amazon Q Business",
+            "AWS アーティファクト",
+            "CodeCommit 承認ルール"
+          ],
+          "answer": 0,
+          "explain": "Amazon Q Developer は、コード、AWS APIs、開発ワークフローを支援するために IDEs に統合されています。",
+          "whyWrong": [
+            null,
+            "Q Business は、データ ソースを介したエンタープライズ ナレッジ チャット用です。",
+            "Artifact はコーディング支援ではなく、コンプライアンス レポートを提供します。",
+            "承認ルールはリポジトリのガバナンス機能です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "question": "プロンプトエンリッチメントジョブと推論ジョブを非同期に分離するには、以下を使用します。",
+          "options": [
+            "Amazon SQS",
+            "AWS WAF",
+            "Amazon Route 53 ヘルスチェック",
+            "AWS 組織"
+          ],
+          "answer": 0,
+          "explain": "Amazon SQS は、プロデューサー サービスとコンシューマー サービス間の分離された非同期処理を有効にします。",
+          "whyWrong": [
+            null,
+            "WAF は Web リクエストをフィルタリングします。それは行列ではありません。",
+            "Route 53 ヘルスチェックは、DNS 可用性メカニズムです。",
+            "組織はアカウントのガバナンスを処理します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "question": "ライフサイクル ルールを備えた不変のプロンプト/レスポンス アーカイブに最も一般的なストレージはどれですか?",
+          "options": [
+            "Amazon S3",
+            "Amazon ElastiCache",
+            "EBS ローカル スナップショットのみ",
+            "Cloud9環境ストレージ"
+          ],
+          "answer": 0,
+          "explain": "Amazon S3 は、ライフサイクル ポリシーとコンプライアンスに配慮したアーカイブ パターンを備えた耐久性の高いオブジェクト ストレージを提供します。",
+          "whyWrong": [
+            null,
+            "ElastiCache はメモリ内にあり、永続的なアーカイブ用ではありません。",
+            "EBS スナップショットはボリューム バックアップであり、プライマリ アーカイブ ワークフローではありません。",
+            "Cloud9 ローカル ストレージは開発環境にとっては一時的なものです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "question": "カスタムアプリのメトリクスとトークン使用量のアラームを監視するのに最適なサービスは何ですか?",
+          "options": [
+            "CloudWatch メトリクス/アラーム",
+            "AWS シールド アドバンスト",
+            "Amazon Macie",
+            "AWS 予算のみ"
+          ],
+          "answer": 0,
+          "explain": "CloudWatch カスタムメトリクスとアラームは、ランタイム KPI の監視とアラートの標準です。",
+          "whyWrong": [
+            null,
+            "シールドは DDoS 防御です。",
+            "Macie は S3 で機密データを発見します。",
+            "Budgets は支出を追跡しますが、ほぼリアルタイムのアプリ テレメトリではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "question": "アプリケーションに一時的な AWS 認証情報を提供する ID サービスはどれですか?",
+          "options": [
+            "AWS STS",
+            "AWS RAM",
+            "AWS IQ",
+            "IAMアクセスアドバイザー"
+          ],
+          "answer": 0,
+          "explain": "AWS STS は、フェデレーションおよびロールベースのアクセス パターン用の一時的なセキュリティ認証情報を発行します。",
+          "whyWrong": [
+            null,
+            "RAM は、資格情報ではなく、アカウント間でリソースを共有します。",
+            "IQ はコンサルティング マーケットプレイスです。",
+            "アクセス アドバイザは、サービスの最終アクセス情報を表示します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "question": "VPC ワークロードから Bedrock APIs へのプライベート ネットワーク アクセスが必要です。使用：",
+          "options": [
+            "VPC エンドポイント (PrivateLink がサポートされている場合)",
+            "パブリックNATのみ",
+            "S3 静的 Web サイトエンドポイント",
+            "Route 53 リゾルバー DNS ファイアウォールのみ"
+          ],
+          "answer": 0,
+          "explain": "インターフェイス VPC エンドポイント/PrivateLink パターンは、パブリック インターネットを経由せずにプライベート接続を提供します。",
+          "whyWrong": [
+            null,
+            "NAT は引き続きパブリック エンドポイントに出力されます。",
+            "S3 Web サイトのエンドポイントは、Bedrock API アクセスとは無関係です。",
+            "DNS ファイアウォールはトランスポート接続を作成しません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "question": "Bedrock でアクション オーケストレーションを使用してツールを使用した会話型ワークフローを構築するには:",
+          "options": [
+            "ナレッジベースのみ",
+            "ガードレールのみ",
+            "Amazon Bedrock のエージェント",
+            "CloudFormation スタックセット"
+          ],
+          "answer": 2,
+          "explain": "エージェントは複数ステップの推論を調整し、ツール/APIs を呼び出してユーザーの意図を実現します。",
+          "whyWrong": [
+            "ナレッジベースは検索コンテキストを提供しますが、広範なオーケストレーションは提供しません。",
+            "ガードレールは、アクションのオーケストレーションではなく、安全制御を適用します。",
+            null,
+            "StackSet はインフラストラクチャをデプロイするものであり、関連性はありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "question": "サーバーレス クイズ アプリの低レイテンシの Key-Value セッション状態に最適なデータストア:",
+          "options": [
+            "Amazon DynamoDB",
+            "Amazon ネプチューン",
+            "AWSバックアップボールト",
+            "Amazon赤方偏移"
+          ],
+          "answer": 0,
+          "explain": "DynamoDB は、セッションとメタデータの状態に最適な、フルマネージドの低レイテンシ NoSQL データストアです。",
+          "whyWrong": [
+            null,
+            "Neptune は、リレーションシップを重視したクエリ用のグラフ データベースです。",
+            "バックアップ コンテナーには、アクティブなセッション データではなくバックアップが保存されます。",
+            "Redshift は分析用のカラム型データ ウェアハウスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "question": "OpenSearch と統合されたマネージド ベクター機能を提供するサービスはどれですか?",
+          "options": [
+            "OpenSearch ベクトル エンジン",
+            "AWS Glue クローラー",
+            "Kinesis Data Firehose のみ",
+            "CloudFront の機能"
+          ],
+          "answer": 0,
+          "explain": "Amazon OpenSearch Service は、セマンティック検索のユースケースのベクトル検索をサポートしています。",
+          "whyWrong": [
+            null,
+            "Glue クローラーはデータをカタログします。ベクトル類似性クエリには対応しません。",
+            "Firehose はインジェスト配信サービスです。",
+            "CloudFront 関数は、ベクター DB 操作ではなく、エッジ JS を実行します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "question": "サーバーを管理せずに定期的な評価ジョブをスケジュールするには:",
+          "options": [
+            "Amazon EventBridge スケジューラ",
+            "EC2 ユーザーデータループ",
+            "手動 CLI の実行",
+            "IAMポリシーシミュレータ"
+          ],
+          "answer": 0,
+          "explain": "EventBridge スケジューラは、管理対象サービスとして cron/rate スケジュール上のターゲットを呼び出します。",
+          "whyWrong": [
+            null,
+            "EC2 ループにより、運用の負担が増大し、信頼性が低下します。",
+            "手動 CLI の実行はスケーラブルな操作ではありません。",
+            "ポリシー シミュレーターは IAM テスト用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html"
+            }
+          ]
+        },
+        {
+          "n": 14,
+          "question": "集中化された API 監査証跡 (誰がいつ何を呼び出したか) の場合、主なサービスは次のとおりです。",
+          "options": [
+            "AWS CloudTrail",
+            "AWS Config 準拠パック",
+            "CloudWatch RUM",
+            "コードアーティファクト"
+          ],
+          "answer": 0,
+          "explain": "CloudTrail は、ガバナンスと調査のために AWS サービス全体で API イベントを記録します。",
+          "whyWrong": [
+            null,
+            "Config は、リソース構成の状態/コンプライアンスを追跡します。",
+            "RUM は Web アプリのクライアント メトリックを収集します。",
+            "CodeArtifact はパッケージ リポジトリ サービスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            }
+          ]
+        },
+        {
+          "n": 15,
+          "question": "HTTPS + CDN を使用して静的 SPA クイズ アプリをグローバルに配信する最良の方法:",
+          "options": [
+            "Amazon CloudFront + S3",
+            "1 つのリージョンに単一の EC2",
+            "Route 53 パブリックゾーンのみ",
+            "AWSバッチ"
+          ],
+          "answer": 0,
+          "explain": "S3 静的アセットを備えた CloudFront は、グローバルな低遅延の静的 Web 配信の標準です。",
+          "whyWrong": [
+            null,
+            "単一リージョン EC2 には CDN エッジの高速化/復元力がありません。",
+            "Route 53 DNS だけではアプリアセットをホストしません。",
+            "バッチは、Web ホスティングではなく、コンピューティング ジョブのスケジューリング用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 16,
+          "question": "ローテーションをサポートする外部 API キーのシークレットが必要です:",
+          "options": [
+            "AWS Secrets Manager",
+            "システムマネージャーのインベントリ",
+            "ログ内のパラメータ履歴",
+            "git にコミットされた Lambda 環境変数"
+          ],
+          "answer": 0,
+          "explain": "Secrets Manager はシークレットを安全に保存し、自動ローテーション パターンをサポートします。",
+          "whyWrong": [
+            null,
+            "インベントリは、シークレットではなくソフトウェアのメタデータを追跡します。",
+            "ログは安全な秘密の保存場所ではありません。",
+            "env 値のコミットは安全ではなく、準拠していません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"
+            }
+          ]
+        },
+        {
+          "n": 17,
+          "question": "Bedrock の企業ドキュメントで回答を根拠付ける場合は、次を使用します。",
+          "options": [
+            "Amazon Bedrock のナレッジベース",
+            "プロンプトの長さのみが増加します",
+            "CloudTrail インサイト",
+            "Athena フェデレーションクエリのみ"
+          ],
+          "answer": 0,
+          "explain": "ナレッジ ベースは、RAG の取り込み、埋め込み、取得、および拡張フローを管理します。",
+          "whyWrong": [
+            null,
+            "取得のない長いプロンプトは脆弱で高価です。",
+            "CloudTrail Insights は異常な API アクティビティを検出します。",
+            "Athena クエリは分析であり、Bedrock の直接取得オーケストレーションではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 18,
+          "question": "Bedrock基礎モデルはどのパターンでアクセスされますか?",
+          "options": [
+            "複数のプロバイダーに対する単一の管理対象 API",
+            "EC2 SSH をモデルホストに直接接続する",
+            "SageMaker ノートブック カーネルのみ",
+            "CloudTrail イベントのリプレイ"
+          ],
+          "answer": 0,
+          "explain": "Amazon Bedrock は、1 つのサービス エンドポイントから複数のモデル プロバイダーへのマネージド API アクセスを提供します。",
+          "whyWrong": [
+            "モデル ホストへの SSH アクセスは、Bedrock の使用方法ではありません。",
+            "ノートブック カーネルはオプションのツールであり、Bedrock アクセス モデルではありません。",
+            "CloudTrail は監査用であり、モデル推論のトランスポート用ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+            }
+          ]
+        },
+        {
+          "n": 19,
+          "question": "RAG でのセマンティック検索には、どのモデル タイプが最適ですか?",
+          "options": [
+            "画像生成モデル",
+            "埋め込みモデル",
+            "音声テキスト変換モデル",
+            "テキスト分類エンドポイント"
+          ],
+          "answer": 1,
+          "explain": "埋め込みは、テキストをベクトル ストアでの類似性検索に使用されるベクトルに変換します。",
+          "whyWrong": [
+            "画像の生成は、テキストの類似性インデックス付けとは無関係です。",
+            null,
+            "Speech-to-Text は、セマンティックなベクトル化ではなく、音声を文字に変換します。",
+            "分類エンドポイントは、検索ベクトルではなく、ラベルを返します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 20,
+          "question": "どの Bedrock 機能がトピック制限と PII 処理を強制しますか?",
+          "options": [
+            "知識ベース",
+            "エージェント",
+            "ガードレール",
+            "即時キャッシュ"
+          ],
+          "answer": 2,
+          "explain": "ガードレールは、サポートされているモデル全体でブロックされたトピック、コンテンツ フィルター、機密情報の制御を定義します。",
+          "whyWrong": [
+            "ナレッジベースは、安全性ポリシーではなく、検索コンテキストを処理します。",
+            "エージェントは、中核となるモデレーション ポリシーではなく、ツールとワークフローを調整します。",
+            null,
+            "プロンプト キャッシュは遅延/コスト機能であり、ポリシー制御ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice-3",
+      "title": "模擬試験 3",
+      "description": "模擬テスト 3 演習セット",
+      "questions": [
+        {
+          "n": 1,
+          "question": "SDK およびインフラストラクチャ スニペットには、IDE ネイティブの AWS コーディング アシスタントが必要です。",
+          "options": [
+            "Amazon Q Developer",
+            "Amazon Q Business",
+            "AWS アーティファクト",
+            "CodeCommit 承認ルール"
+          ],
+          "answer": 0,
+          "explain": "Amazon Q Developer は、コード、AWS APIs、開発ワークフローを支援するために IDEs に統合されています。",
+          "whyWrong": [
+            null,
+            "Q Business は、データ ソースを介したエンタープライズ ナレッジ チャット用です。",
+            "Artifact はコーディング支援ではなく、コンプライアンス レポートを提供します。",
+            "承認ルールはリポジトリのガバナンス機能です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "question": "プロンプトエンリッチメントジョブと推論ジョブを非同期に分離するには、以下を使用します。",
+          "options": [
+            "Amazon SQS",
+            "AWS WAF",
+            "Amazon Route 53 ヘルスチェック",
+            "AWS 組織"
+          ],
+          "answer": 0,
+          "explain": "Amazon SQS は、プロデューサー サービスとコンシューマー サービス間の分離された非同期処理を有効にします。",
+          "whyWrong": [
+            null,
+            "WAF は Web リクエストをフィルタリングします。それは行列ではありません。",
+            "Route 53 ヘルスチェックは、DNS 可用性メカニズムです。",
+            "組織はアカウントのガバナンスを処理します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "question": "ライフサイクル ルールを備えた不変のプロンプト/レスポンス アーカイブに最も一般的なストレージはどれですか?",
+          "options": [
+            "Amazon S3",
+            "Amazon ElastiCache",
+            "EBS ローカル スナップショットのみ",
+            "Cloud9環境ストレージ"
+          ],
+          "answer": 0,
+          "explain": "Amazon S3 は、ライフサイクル ポリシーとコンプライアンスに配慮したアーカイブ パターンを備えた耐久性の高いオブジェクト ストレージを提供します。",
+          "whyWrong": [
+            null,
+            "ElastiCache はメモリ内にあり、永続的なアーカイブ用ではありません。",
+            "EBS スナップショットはボリューム バックアップであり、プライマリ アーカイブ ワークフローではありません。",
+            "Cloud9 ローカル ストレージは開発環境にとっては一時的なものです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "question": "カスタムアプリのメトリクスとトークン使用量のアラームを監視するのに最適なサービスは何ですか?",
+          "options": [
+            "CloudWatch メトリクス/アラーム",
+            "AWS シールド アドバンスト",
+            "Amazon Macie",
+            "AWS 予算のみ"
+          ],
+          "answer": 0,
+          "explain": "CloudWatch カスタムメトリクスとアラームは、ランタイム KPI の監視とアラートの標準です。",
+          "whyWrong": [
+            null,
+            "シールドは DDoS 防御です。",
+            "Macie は S3 で機密データを発見します。",
+            "Budgets は支出を追跡しますが、ほぼリアルタイムのアプリ テレメトリではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "question": "アプリケーションに一時的な AWS 認証情報を提供する ID サービスはどれですか?",
+          "options": [
+            "AWS STS",
+            "AWS RAM",
+            "AWS IQ",
+            "IAMアクセスアドバイザー"
+          ],
+          "answer": 0,
+          "explain": "AWS STS は、フェデレーションおよびロールベースのアクセス パターン用の一時的なセキュリティ認証情報を発行します。",
+          "whyWrong": [
+            null,
+            "RAM は、資格情報ではなく、アカウント間でリソースを共有します。",
+            "IQ はコンサルティング マーケットプレイスです。",
+            "アクセス アドバイザは、サービスの最終アクセス情報を表示します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "question": "VPC ワークロードから Bedrock APIs へのプライベート ネットワーク アクセスが必要です。使用：",
+          "options": [
+            "VPC エンドポイント (PrivateLink がサポートされている場合)",
+            "パブリックNATのみ",
+            "S3 静的 Web サイトエンドポイント",
+            "Route 53 リゾルバー DNS ファイアウォールのみ"
+          ],
+          "answer": 0,
+          "explain": "インターフェイス VPC エンドポイント/PrivateLink パターンは、パブリック インターネットを経由せずにプライベート接続を提供します。",
+          "whyWrong": [
+            null,
+            "NAT は引き続きパブリック エンドポイントに出力されます。",
+            "S3 Web サイトのエンドポイントは、Bedrock API アクセスとは無関係です。",
+            "DNS ファイアウォールはトランスポート接続を作成しません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "question": "Bedrock でアクション オーケストレーションを使用してツールを使用した会話型ワークフローを構築するには:",
+          "options": [
+            "ナレッジベースのみ",
+            "ガードレールのみ",
+            "Amazon Bedrock のエージェント",
+            "CloudFormation スタックセット"
+          ],
+          "answer": 2,
+          "explain": "エージェントは複数ステップの推論を調整し、ツール/APIs を呼び出してユーザーの意図を実現します。",
+          "whyWrong": [
+            "ナレッジベースは検索コンテキストを提供しますが、広範なオーケストレーションは提供しません。",
+            "ガードレールは、アクションのオーケストレーションではなく、安全制御を適用します。",
+            null,
+            "StackSet はインフラストラクチャをデプロイするものであり、関連性はありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "question": "サーバーレス クイズ アプリの低レイテンシの Key-Value セッション状態に最適なデータストア:",
+          "options": [
+            "Amazon DynamoDB",
+            "Amazon ネプチューン",
+            "AWSバックアップボールト",
+            "Amazon赤方偏移"
+          ],
+          "answer": 0,
+          "explain": "DynamoDB は、セッションとメタデータの状態に最適な、フルマネージドの低レイテンシ NoSQL データストアです。",
+          "whyWrong": [
+            null,
+            "Neptune は、リレーションシップを重視したクエリ用のグラフ データベースです。",
+            "バックアップ コンテナーには、アクティブなセッション データではなくバックアップが保存されます。",
+            "Redshift は分析用のカラム型データ ウェアハウスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "question": "OpenSearch と統合されたマネージド ベクター機能を提供するサービスはどれですか?",
+          "options": [
+            "OpenSearch ベクトル エンジン",
+            "AWS Glue クローラー",
+            "Kinesis Data Firehose のみ",
+            "CloudFront の機能"
+          ],
+          "answer": 0,
+          "explain": "Amazon OpenSearch Service は、セマンティック検索のユースケースのベクトル検索をサポートしています。",
+          "whyWrong": [
+            null,
+            "Glue クローラーはデータをカタログします。ベクトル類似性クエリには対応しません。",
+            "Firehose はインジェスト配信サービスです。",
+            "CloudFront 関数は、ベクター DB 操作ではなく、エッジ JS を実行します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "question": "サーバーを管理せずに定期的な評価ジョブをスケジュールするには:",
+          "options": [
+            "Amazon EventBridge スケジューラ",
+            "EC2 ユーザーデータループ",
+            "手動 CLI の実行",
+            "IAMポリシーシミュレータ"
+          ],
+          "answer": 0,
+          "explain": "EventBridge スケジューラは、管理対象サービスとして cron/rate スケジュール上のターゲットを呼び出します。",
+          "whyWrong": [
+            null,
+            "EC2 ループにより、運用の負担が増大し、信頼性が低下します。",
+            "手動 CLI の実行はスケーラブルな操作ではありません。",
+            "ポリシー シミュレーターは IAM テスト用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html"
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "question": "集中化された API 監査証跡 (誰がいつ何を呼び出したか) の場合、主なサービスは次のとおりです。",
+          "options": [
+            "AWS CloudTrail",
+            "AWS Config 準拠パック",
+            "CloudWatch RUM",
+            "コードアーティファクト"
+          ],
+          "answer": 0,
+          "explain": "CloudTrail は、ガバナンスと調査のために AWS サービス全体で API イベントを記録します。",
+          "whyWrong": [
+            null,
+            "Config は、リソース構成の状態/コンプライアンスを追跡します。",
+            "RUM は Web アプリのクライアント メトリックを収集します。",
+            "CodeArtifact はパッケージ リポジトリ サービスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "question": "HTTPS + CDN を使用して静的 SPA クイズ アプリをグローバルに配信する最良の方法:",
+          "options": [
+            "Amazon CloudFront + S3",
+            "1 つのリージョンに単一の EC2",
+            "Route 53 パブリックゾーンのみ",
+            "AWSバッチ"
+          ],
+          "answer": 0,
+          "explain": "S3 静的アセットを備えた CloudFront は、グローバルな低遅延の静的 Web 配信の標準です。",
+          "whyWrong": [
+            null,
+            "単一リージョン EC2 には CDN エッジの高速化/復元力がありません。",
+            "Route 53 DNS だけではアプリアセットをホストしません。",
+            "バッチは、Web ホスティングではなく、コンピューティング ジョブのスケジューリング用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "question": "ローテーションをサポートする外部 API キーのシークレットが必要です:",
+          "options": [
+            "AWS Secrets Manager",
+            "システムマネージャーのインベントリ",
+            "ログ内のパラメータ履歴",
+            "git にコミットされた Lambda 環境変数"
+          ],
+          "answer": 0,
+          "explain": "Secrets Manager はシークレットを安全に保存し、自動ローテーション パターンをサポートします。",
+          "whyWrong": [
+            null,
+            "インベントリは、シークレットではなくソフトウェアのメタデータを追跡します。",
+            "ログは安全な秘密の保存場所ではありません。",
+            "env 値のコミットは安全ではなく、準拠していません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"
+            }
+          ]
+        },
+        {
+          "n": 14,
+          "question": "Bedrock の企業ドキュメントで回答を根拠付ける場合は、次を使用します。",
+          "options": [
+            "Amazon Bedrock のナレッジベース",
+            "プロンプトの長さのみが増加します",
+            "CloudTrail インサイト",
+            "Athena フェデレーションクエリのみ"
+          ],
+          "answer": 0,
+          "explain": "ナレッジ ベースは、RAG の取り込み、埋め込み、取得、および拡張フローを管理します。",
+          "whyWrong": [
+            null,
+            "取得のない長いプロンプトは脆弱で高価です。",
+            "CloudTrail Insights は異常な API アクティビティを検出します。",
+            "Athena クエリは分析であり、Bedrock の直接取得オーケストレーションではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 15,
+          "question": "Bedrock基礎モデルはどのパターンでアクセスされますか?",
+          "options": [
+            "複数のプロバイダーに対する単一の管理対象 API",
+            "EC2 SSH をモデルホストに直接接続する",
+            "SageMaker ノートブック カーネルのみ",
+            "CloudTrail イベントのリプレイ"
+          ],
+          "answer": 0,
+          "explain": "Amazon Bedrock は、1 つのサービス エンドポイントから複数のモデル プロバイダーへのマネージド API アクセスを提供します。",
+          "whyWrong": [
+            "モデル ホストへの SSH アクセスは、Bedrock の使用方法ではありません。",
+            "ノートブック カーネルはオプションのツールであり、Bedrock アクセス モデルではありません。",
+            "CloudTrail は監査用であり、モデル推論のトランスポート用ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+            }
+          ]
+        },
+        {
+          "n": 16,
+          "question": "RAG でのセマンティック検索には、どのモデル タイプが最適ですか?",
+          "options": [
+            "画像生成モデル",
+            "埋め込みモデル",
+            "音声テキスト変換モデル",
+            "テキスト分類エンドポイント"
+          ],
+          "answer": 1,
+          "explain": "埋め込みは、テキストをベクトル ストアでの類似性検索に使用されるベクトルに変換します。",
+          "whyWrong": [
+            "画像の生成は、テキストの類似性インデックス付けとは無関係です。",
+            null,
+            "Speech-to-Text は、セマンティックなベクトル化ではなく、音声を文字に変換します。",
+            "分類エンドポイントは、検索ベクトルではなく、ラベルを返します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 17,
+          "question": "どの Bedrock 機能がトピック制限と PII 処理を強制しますか?",
+          "options": [
+            "知識ベース",
+            "エージェント",
+            "ガードレール",
+            "即時キャッシュ"
+          ],
+          "answer": 2,
+          "explain": "ガードレールは、サポートされているモデル全体でブロックされたトピック、コンテンツ フィルター、機密情報の制御を定義します。",
+          "whyWrong": [
+            "ナレッジベースは、安全性ポリシーではなく、検索コンテキストを処理します。",
+            "エージェントは、中核となるモデレーション ポリシーではなく、ツールとワークフローを調整します。",
+            null,
+            "プロンプト キャッシュは遅延/コスト機能であり、ポリシー制御ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+            }
+          ]
+        },
+        {
+          "n": 18,
+          "question": "Lambda と API ゲートウェイにわたるエンドツーエンドのリクエスト レイテンシー トレースが必要です。使用：",
+          "options": [
+            "クラウドトレイル レイク",
+            "AWS X-Ray",
+            "IAMアクセスアナライザー",
+            "信頼できるアドバイザー"
+          ],
+          "answer": 1,
+          "explain": "AWS X-Ray は、遅延ボトルネック分析のための分散トレーシングとサービス マップを提供します。",
+          "whyWrong": [
+            "CloudTrail Lake は監査クエリ分析用です。",
+            null,
+            "Access Analyzer は、ポリシーの公開結果を検出するためのものです。",
+            "Trusted Advisor は、トレースではなく、ベスト プラクティスのチェックを提供します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html"
+            }
+          ]
+        },
+        {
+          "n": 19,
+          "question": "前処理のために PDF から表、フォーム、テキストを抽出するサービスはどれですか?",
+          "options": [
+            "Amazon Textract",
+            "Amazon Polly",
+            "Amazon Rekognition カスタムラベル",
+            "AWS グルー"
+          ],
+          "answer": 0,
+          "explain": "Amazon Textract は、OCR およびフォーム/テーブルを含む構造化ドキュメントの抽出専用に構築されています。",
+          "whyWrong": [
+            null,
+            "Polly はテキスト読み上げです。",
+            "Rekognition Custom Labels は、画像/ビデオ オブジェクトのラベル付けに使用します。",
+            "Glue は ETL/カタログ サービスであり、OCR 抽出ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/textract/latest/dg/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 20,
+          "question": "確定的な出力に最適な低分散設定はどれですか?",
+          "options": [
+            "高温 (0.9+)",
+            "低温（0.0～0.3）",
+            "Top-k 最大値のみ",
+            "システムプロンプトが表示されない"
+          ],
+          "answer": 1,
+          "explain": "温度が低いとランダム性が減り、ポリシー/契約出力の一貫性が向上します。",
+          "whyWrong": [
+            "温度が高いほど、創造性と変化が高まります。",
+            null,
+            "Top-k だけでは温度挙動制御に代わるものではありません。",
+            "システム プロンプトは、動作の制約にとって依然として重要です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice-4",
+      "title": "模擬試験 4",
+      "description": "模擬テスト 4 演習セット",
+      "questions": [
+        {
+          "n": 1,
+          "question": "カスタムアプリのメトリクスとトークン使用量のアラームを監視するのに最適なサービスは何ですか?",
+          "options": [
+            "CloudWatch メトリクス/アラーム",
+            "AWS シールド アドバンスト",
+            "Amazon Macie",
+            "AWS 予算のみ"
+          ],
+          "answer": 0,
+          "explain": "CloudWatch カスタムメトリクスとアラームは、ランタイム KPI の監視とアラートの標準です。",
+          "whyWrong": [
+            null,
+            "シールドは DDoS 防御です。",
+            "Macie は S3 で機密データを発見します。",
+            "Budgets は支出を追跡しますが、ほぼリアルタイムのアプリ テレメトリではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "question": "アプリケーションに一時的な AWS 認証情報を提供する ID サービスはどれですか?",
+          "options": [
+            "AWS STS",
+            "AWS RAM",
+            "AWS IQ",
+            "IAMアクセスアドバイザー"
+          ],
+          "answer": 0,
+          "explain": "AWS STS は、フェデレーションおよびロールベースのアクセス パターン用の一時的なセキュリティ認証情報を発行します。",
+          "whyWrong": [
+            null,
+            "RAM は、資格情報ではなく、アカウント間でリソースを共有します。",
+            "IQ はコンサルティング マーケットプレイスです。",
+            "アクセス アドバイザは、サービスの最終アクセス情報を表示します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "question": "VPC ワークロードから Bedrock APIs へのプライベート ネットワーク アクセスが必要です。使用：",
+          "options": [
+            "VPC エンドポイント (PrivateLink がサポートされている場合)",
+            "パブリックNATのみ",
+            "S3 静的 Web サイトエンドポイント",
+            "Route 53 リゾルバー DNS ファイアウォールのみ"
+          ],
+          "answer": 0,
+          "explain": "インターフェイス VPC エンドポイント/PrivateLink パターンは、パブリック インターネットを経由せずにプライベート接続を提供します。",
+          "whyWrong": [
+            null,
+            "NAT は引き続きパブリック エンドポイントに出力されます。",
+            "S3 Web サイトのエンドポイントは、Bedrock API アクセスとは無関係です。",
+            "DNS ファイアウォールはトランスポート接続を作成しません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "question": "Bedrock でアクション オーケストレーションを使用してツールを使用した会話型ワークフローを構築するには:",
+          "options": [
+            "ナレッジベースのみ",
+            "ガードレールのみ",
+            "Amazon Bedrock のエージェント",
+            "CloudFormation スタックセット"
+          ],
+          "answer": 2,
+          "explain": "エージェントは複数ステップの推論を調整し、ツール/APIs を呼び出してユーザーの意図を実現します。",
+          "whyWrong": [
+            "ナレッジベースは検索コンテキストを提供しますが、広範なオーケストレーションは提供しません。",
+            "ガードレールは、アクションのオーケストレーションではなく、安全制御を適用します。",
+            null,
+            "StackSet はインフラストラクチャをデプロイするものであり、関連性はありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "question": "サーバーレス クイズ アプリの低レイテンシの Key-Value セッション状態に最適なデータストア:",
+          "options": [
+            "Amazon DynamoDB",
+            "Amazon ネプチューン",
+            "AWSバックアップボールト",
+            "Amazon赤方偏移"
+          ],
+          "answer": 0,
+          "explain": "DynamoDB は、セッションとメタデータの状態に最適な、フルマネージドの低レイテンシ NoSQL データストアです。",
+          "whyWrong": [
+            null,
+            "Neptune は、リレーションシップを重視したクエリ用のグラフ データベースです。",
+            "バックアップ コンテナーには、アクティブなセッション データではなくバックアップが保存されます。",
+            "Redshift は分析用のカラム型データ ウェアハウスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "question": "OpenSearch と統合されたマネージド ベクター機能を提供するサービスはどれですか?",
+          "options": [
+            "OpenSearch ベクトル エンジン",
+            "AWS Glue クローラー",
+            "Kinesis Data Firehose のみ",
+            "CloudFront の機能"
+          ],
+          "answer": 0,
+          "explain": "Amazon OpenSearch Service は、セマンティック検索のユースケースのベクトル検索をサポートしています。",
+          "whyWrong": [
+            null,
+            "Glue クローラーはデータをカタログします。ベクトル類似性クエリには対応しません。",
+            "Firehose はインジェスト配信サービスです。",
+            "CloudFront 関数は、ベクター DB 操作ではなく、エッジ JS を実行します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "question": "サーバーを管理せずに定期的な評価ジョブをスケジュールするには:",
+          "options": [
+            "Amazon EventBridge スケジューラ",
+            "EC2 ユーザーデータループ",
+            "手動 CLI の実行",
+            "IAMポリシーシミュレータ"
+          ],
+          "answer": 0,
+          "explain": "EventBridge スケジューラは、管理対象サービスとして cron/rate スケジュール上のターゲットを呼び出します。",
+          "whyWrong": [
+            null,
+            "EC2 ループにより、運用の負担が増大し、信頼性が低下します。",
+            "手動 CLI の実行はスケーラブルな操作ではありません。",
+            "ポリシー シミュレーターは IAM テスト用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "question": "集中化された API 監査証跡 (誰がいつ何を呼び出したか) の場合、主なサービスは次のとおりです。",
+          "options": [
+            "AWS CloudTrail",
+            "AWS Config 準拠パック",
+            "CloudWatch RUM",
+            "コードアーティファクト"
+          ],
+          "answer": 0,
+          "explain": "CloudTrail は、ガバナンスと調査のために AWS サービス全体で API イベントを記録します。",
+          "whyWrong": [
+            null,
+            "Config は、リソース構成の状態/コンプライアンスを追跡します。",
+            "RUM は Web アプリのクライアント メトリックを収集します。",
+            "CodeArtifact はパッケージ リポジトリ サービスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "question": "HTTPS + CDN を使用して静的 SPA クイズ アプリをグローバルに配信する最良の方法:",
+          "options": [
+            "Amazon CloudFront + S3",
+            "1 つのリージョンに単一の EC2",
+            "Route 53 パブリックゾーンのみ",
+            "AWSバッチ"
+          ],
+          "answer": 0,
+          "explain": "S3 静的アセットを備えた CloudFront は、グローバルな低遅延の静的 Web 配信の標準です。",
+          "whyWrong": [
+            null,
+            "単一リージョン EC2 には CDN エッジの高速化/復元力がありません。",
+            "Route 53 DNS だけではアプリアセットをホストしません。",
+            "バッチは、Web ホスティングではなく、コンピューティング ジョブのスケジューリング用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "question": "ローテーションをサポートする外部 API キーのシークレットが必要です:",
+          "options": [
+            "AWS Secrets Manager",
+            "システムマネージャーのインベントリ",
+            "ログ内のパラメータ履歴",
+            "git にコミットされた Lambda 環境変数"
+          ],
+          "answer": 0,
+          "explain": "Secrets Manager はシークレットを安全に保存し、自動ローテーション パターンをサポートします。",
+          "whyWrong": [
+            null,
+            "インベントリは、シークレットではなくソフトウェアのメタデータを追跡します。",
+            "ログは安全な秘密の保存場所ではありません。",
+            "env 値のコミットは安全ではなく、準拠していません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "question": "Bedrock の企業ドキュメントで回答を根拠付ける場合は、次を使用します。",
+          "options": [
+            "Amazon Bedrock のナレッジベース",
+            "プロンプトの長さのみが増加します",
+            "CloudTrail インサイト",
+            "Athena フェデレーションクエリのみ"
+          ],
+          "answer": 0,
+          "explain": "ナレッジ ベースは、RAG の取り込み、埋め込み、取得、および拡張フローを管理します。",
+          "whyWrong": [
+            null,
+            "取得のない長いプロンプトは脆弱で高価です。",
+            "CloudTrail Insights は異常な API アクティビティを検出します。",
+            "Athena クエリは分析であり、Bedrock の直接取得オーケストレーションではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "question": "Bedrock基礎モデルはどのパターンでアクセスされますか?",
+          "options": [
+            "複数のプロバイダーに対する単一の管理対象 API",
+            "EC2 SSH をモデルホストに直接接続する",
+            "SageMaker ノートブック カーネルのみ",
+            "CloudTrail イベントのリプレイ"
+          ],
+          "answer": 0,
+          "explain": "Amazon Bedrock は、1 つのサービス エンドポイントから複数のモデル プロバイダーへのマネージド API アクセスを提供します。",
+          "whyWrong": [
+            "モデル ホストへの SSH アクセスは、Bedrock の使用方法ではありません。",
+            "ノートブック カーネルはオプションのツールであり、Bedrock アクセス モデルではありません。",
+            "CloudTrail は監査用であり、モデル推論のトランスポート用ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "question": "RAG でのセマンティック検索には、どのモデル タイプが最適ですか?",
+          "options": [
+            "画像生成モデル",
+            "埋め込みモデル",
+            "音声テキスト変換モデル",
+            "テキスト分類エンドポイント"
+          ],
+          "answer": 1,
+          "explain": "埋め込みは、テキストをベクトル ストアでの類似性検索に使用されるベクトルに変換します。",
+          "whyWrong": [
+            "画像の生成は、テキストの類似性インデックス付けとは無関係です。",
+            null,
+            "Speech-to-Text は、セマンティックなベクトル化ではなく、音声を文字に変換します。",
+            "分類エンドポイントは、検索ベクトルではなく、ラベルを返します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 14,
+          "question": "どの Bedrock 機能がトピック制限と PII 処理を強制しますか?",
+          "options": [
+            "知識ベース",
+            "エージェント",
+            "ガードレール",
+            "即時キャッシュ"
+          ],
+          "answer": 2,
+          "explain": "ガードレールは、サポートされているモデル全体でブロックされたトピック、コンテンツ フィルター、機密情報の制御を定義します。",
+          "whyWrong": [
+            "ナレッジベースは、安全性ポリシーではなく、検索コンテキストを処理します。",
+            "エージェントは、中核となるモデレーション ポリシーではなく、ツールとワークフローを調整します。",
+            null,
+            "プロンプト キャッシュは遅延/コスト機能であり、ポリシー制御ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+            }
+          ]
+        },
+        {
+          "n": 15,
+          "question": "Lambda と API ゲートウェイにわたるエンドツーエンドのリクエスト レイテンシー トレースが必要です。使用：",
+          "options": [
+            "クラウドトレイル レイク",
+            "AWS X-Ray",
+            "IAMアクセスアナライザー",
+            "信頼できるアドバイザー"
+          ],
+          "answer": 1,
+          "explain": "AWS X-Ray は、遅延ボトルネック分析のための分散トレーシングとサービス マップを提供します。",
+          "whyWrong": [
+            "CloudTrail Lake は監査クエリ分析用です。",
+            null,
+            "Access Analyzer は、ポリシーの公開結果を検出するためのものです。",
+            "Trusted Advisor は、トレースではなく、ベスト プラクティスのチェックを提供します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html"
+            }
+          ]
+        },
+        {
+          "n": 16,
+          "question": "前処理のために PDF から表、フォーム、テキストを抽出するサービスはどれですか?",
+          "options": [
+            "Amazon Textract",
+            "Amazon Polly",
+            "Amazon Rekognition カスタムラベル",
+            "AWS グルー"
+          ],
+          "answer": 0,
+          "explain": "Amazon Textract は、OCR およびフォーム/テーブルを含む構造化ドキュメントの抽出専用に構築されています。",
+          "whyWrong": [
+            null,
+            "Polly はテキスト読み上げです。",
+            "Rekognition Custom Labels は、画像/ビデオ オブジェクトのラベル付けに使用します。",
+            "Glue は ETL/カタログ サービスであり、OCR 抽出ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/textract/latest/dg/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 17,
+          "question": "確定的な出力に最適な低分散設定はどれですか?",
+          "options": [
+            "高温 (0.9+)",
+            "低温（0.0～0.3）",
+            "Top-k 最大値のみ",
+            "システムプロンプトが表示されない"
+          ],
+          "answer": 1,
+          "explain": "温度が低いとランダム性が減り、ポリシー/契約出力の一貫性が向上します。",
+          "whyWrong": [
+            "温度が高いほど、創造性と変化が高まります。",
+            null,
+            "Top-k だけでは温度挙動制御に代わるものではありません。",
+            "システム プロンプトは、動作の制約にとって依然として重要です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"
+            }
+          ]
+        },
+        {
+          "n": 18,
+          "question": "SDK およびインフラストラクチャ スニペットには、IDE ネイティブの AWS コーディング アシスタントが必要です。",
+          "options": [
+            "Amazon Q Developer",
+            "Amazon Q Business",
+            "AWS アーティファクト",
+            "CodeCommit 承認ルール"
+          ],
+          "answer": 0,
+          "explain": "Amazon Q Developer は、コード、AWS APIs、開発ワークフローを支援するために IDEs に統合されています。",
+          "whyWrong": [
+            null,
+            "Q Business は、データ ソースを介したエンタープライズ ナレッジ チャット用です。",
+            "Artifact はコーディング支援ではなく、コンプライアンス レポートを提供します。",
+            "承認ルールはリポジトリのガバナンス機能です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 19,
+          "question": "プロンプトエンリッチメントジョブと推論ジョブを非同期に分離するには、以下を使用します。",
+          "options": [
+            "Amazon SQS",
+            "AWS WAF",
+            "Amazon Route 53 ヘルスチェック",
+            "AWS 組織"
+          ],
+          "answer": 0,
+          "explain": "Amazon SQS は、プロデューサー サービスとコンシューマー サービス間の分離された非同期処理を有効にします。",
+          "whyWrong": [
+            null,
+            "WAF は Web リクエストをフィルタリングします。それは行列ではありません。",
+            "Route 53 ヘルスチェックは、DNS 可用性メカニズムです。",
+            "組織はアカウントのガバナンスを処理します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 20,
+          "question": "ライフサイクル ルールを備えた不変のプロンプト/レスポンス アーカイブに最も一般的なストレージはどれですか?",
+          "options": [
+            "Amazon S3",
+            "Amazon ElastiCache",
+            "EBS ローカル スナップショットのみ",
+            "Cloud9環境ストレージ"
+          ],
+          "answer": 0,
+          "explain": "Amazon S3 は、ライフサイクル ポリシーとコンプライアンスに配慮したアーカイブ パターンを備えた耐久性の高いオブジェクト ストレージを提供します。",
+          "whyWrong": [
+            null,
+            "ElastiCache はメモリ内にあり、永続的なアーカイブ用ではありません。",
+            "EBS スナップショットはボリューム バックアップであり、プライマリ アーカイブ ワークフローではありません。",
+            "Cloud9 ローカル ストレージは開発環境にとっては一時的なものです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice-5",
+      "title": "模擬試験 5",
+      "description": "模擬テスト 5 演習セット",
+      "questions": [
+        {
+          "n": 1,
+          "question": "Bedrock でアクション オーケストレーションを使用してツールを使用した会話型ワークフローを構築するには:",
+          "options": [
+            "ナレッジベースのみ",
+            "ガードレールのみ",
+            "Amazon Bedrock のエージェント",
+            "CloudFormation スタックセット"
+          ],
+          "answer": 2,
+          "explain": "エージェントは複数ステップの推論を調整し、ツール/APIs を呼び出してユーザーの意図を実現します。",
+          "whyWrong": [
+            "ナレッジベースは検索コンテキストを提供しますが、広範なオーケストレーションは提供しません。",
+            "ガードレールは、アクションのオーケストレーションではなく、安全制御を適用します。",
+            null,
+            "StackSet はインフラストラクチャをデプロイするものであり、関連性はありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "question": "サーバーレス クイズ アプリの低レイテンシの Key-Value セッション状態に最適なデータストア:",
+          "options": [
+            "Amazon DynamoDB",
+            "Amazon ネプチューン",
+            "AWSバックアップボールト",
+            "Amazon赤方偏移"
+          ],
+          "answer": 0,
+          "explain": "DynamoDB は、セッションとメタデータの状態に最適な、フルマネージドの低レイテンシ NoSQL データストアです。",
+          "whyWrong": [
+            null,
+            "Neptune は、リレーションシップを重視したクエリ用のグラフ データベースです。",
+            "バックアップ コンテナーには、アクティブなセッション データではなくバックアップが保存されます。",
+            "Redshift は分析用のカラム型データ ウェアハウスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "question": "OpenSearch と統合されたマネージド ベクター機能を提供するサービスはどれですか?",
+          "options": [
+            "OpenSearch ベクトル エンジン",
+            "AWS Glue クローラー",
+            "Kinesis Data Firehose のみ",
+            "CloudFront の機能"
+          ],
+          "answer": 0,
+          "explain": "Amazon OpenSearch Service は、セマンティック検索のユースケースのベクトル検索をサポートしています。",
+          "whyWrong": [
+            null,
+            "Glue クローラーはデータをカタログします。ベクトル類似性クエリには対応しません。",
+            "Firehose はインジェスト配信サービスです。",
+            "CloudFront 関数は、ベクター DB 操作ではなく、エッジ JS を実行します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "question": "サーバーを管理せずに定期的な評価ジョブをスケジュールするには:",
+          "options": [
+            "Amazon EventBridge スケジューラ",
+            "EC2 ユーザーデータループ",
+            "手動 CLI の実行",
+            "IAMポリシーシミュレータ"
+          ],
+          "answer": 0,
+          "explain": "EventBridge スケジューラは、管理対象サービスとして cron/rate スケジュール上のターゲットを呼び出します。",
+          "whyWrong": [
+            null,
+            "EC2 ループにより、運用の負担が増大し、信頼性が低下します。",
+            "手動 CLI の実行はスケーラブルな操作ではありません。",
+            "ポリシー シミュレーターは IAM テスト用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "question": "集中化された API 監査証跡 (誰がいつ何を呼び出したか) の場合、主なサービスは次のとおりです。",
+          "options": [
+            "AWS CloudTrail",
+            "AWS Config 準拠パック",
+            "CloudWatch RUM",
+            "コードアーティファクト"
+          ],
+          "answer": 0,
+          "explain": "CloudTrail は、ガバナンスと調査のために AWS サービス全体で API イベントを記録します。",
+          "whyWrong": [
+            null,
+            "Config は、リソース構成の状態/コンプライアンスを追跡します。",
+            "RUM は Web アプリのクライアント メトリックを収集します。",
+            "CodeArtifact はパッケージ リポジトリ サービスです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "question": "HTTPS + CDN を使用して静的 SPA クイズ アプリをグローバルに配信する最良の方法:",
+          "options": [
+            "Amazon CloudFront + S3",
+            "1 つのリージョンに単一の EC2",
+            "Route 53 パブリックゾーンのみ",
+            "AWSバッチ"
+          ],
+          "answer": 0,
+          "explain": "S3 静的アセットを備えた CloudFront は、グローバルな低遅延の静的 Web 配信の標準です。",
+          "whyWrong": [
+            null,
+            "単一リージョン EC2 には CDN エッジの高速化/復元力がありません。",
+            "Route 53 DNS だけではアプリアセットをホストしません。",
+            "バッチは、Web ホスティングではなく、コンピューティング ジョブのスケジューリング用です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "question": "ローテーションをサポートする外部 API キーのシークレットが必要です:",
+          "options": [
+            "AWS Secrets Manager",
+            "システムマネージャーのインベントリ",
+            "ログ内のパラメータ履歴",
+            "git にコミットされた Lambda 環境変数"
+          ],
+          "answer": 0,
+          "explain": "Secrets Manager はシークレットを安全に保存し、自動ローテーション パターンをサポートします。",
+          "whyWrong": [
+            null,
+            "インベントリは、シークレットではなくソフトウェアのメタデータを追跡します。",
+            "ログは安全な秘密の保存場所ではありません。",
+            "env 値のコミットは安全ではなく、準拠していません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "question": "Bedrock の企業ドキュメントで回答を根拠付ける場合は、次を使用します。",
+          "options": [
+            "Amazon Bedrock のナレッジベース",
+            "プロンプトの長さのみが増加します",
+            "CloudTrail インサイト",
+            "Athena フェデレーションクエリのみ"
+          ],
+          "answer": 0,
+          "explain": "ナレッジ ベースは、RAG の取り込み、埋め込み、取得、および拡張フローを管理します。",
+          "whyWrong": [
+            null,
+            "取得のない長いプロンプトは脆弱で高価です。",
+            "CloudTrail Insights は異常な API アクティビティを検出します。",
+            "Athena クエリは分析であり、Bedrock の直接取得オーケストレーションではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "question": "Bedrock基礎モデルはどのパターンでアクセスされますか?",
+          "options": [
+            "複数のプロバイダーに対する単一の管理対象 API",
+            "EC2 SSH をモデルホストに直接接続する",
+            "SageMaker ノートブック カーネルのみ",
+            "CloudTrail イベントのリプレイ"
+          ],
+          "answer": 0,
+          "explain": "Amazon Bedrock は、1 つのサービス エンドポイントから複数のモデル プロバイダーへのマネージド API アクセスを提供します。",
+          "whyWrong": [
+            "モデル ホストへの SSH アクセスは、Bedrock の使用方法ではありません。",
+            "ノートブック カーネルはオプションのツールであり、Bedrock アクセス モデルではありません。",
+            "CloudTrail は監査用であり、モデル推論のトランスポート用ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "question": "RAG でのセマンティック検索には、どのモデル タイプが最適ですか?",
+          "options": [
+            "画像生成モデル",
+            "埋め込みモデル",
+            "音声テキスト変換モデル",
+            "テキスト分類エンドポイント"
+          ],
+          "answer": 1,
+          "explain": "埋め込みは、テキストをベクトル ストアでの類似性検索に使用されるベクトルに変換します。",
+          "whyWrong": [
+            "画像の生成は、テキストの類似性インデックス付けとは無関係です。",
+            null,
+            "Speech-to-Text は、セマンティックなベクトル化ではなく、音声を文字に変換します。",
+            "分類エンドポイントは、検索ベクトルではなく、ラベルを返します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "question": "どの Bedrock 機能がトピック制限と PII 処理を強制しますか?",
+          "options": [
+            "知識ベース",
+            "エージェント",
+            "ガードレール",
+            "即時キャッシュ"
+          ],
+          "answer": 2,
+          "explain": "ガードレールは、サポートされているモデル全体でブロックされたトピック、コンテンツ フィルター、機密情報の制御を定義します。",
+          "whyWrong": [
+            "ナレッジベースは、安全性ポリシーではなく、検索コンテキストを処理します。",
+            "エージェントは、中核となるモデレーション ポリシーではなく、ツールとワークフローを調整します。",
+            null,
+            "プロンプト キャッシュは遅延/コスト機能であり、ポリシー制御ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "question": "Lambda と API ゲートウェイにわたるエンドツーエンドのリクエスト レイテンシー トレースが必要です。使用：",
+          "options": [
+            "クラウドトレイル レイク",
+            "AWS X-Ray",
+            "IAMアクセスアナライザー",
+            "信頼できるアドバイザー"
+          ],
+          "answer": 1,
+          "explain": "AWS X-Ray は、遅延ボトルネック分析のための分散トレーシングとサービス マップを提供します。",
+          "whyWrong": [
+            "CloudTrail Lake は監査クエリ分析用です。",
+            null,
+            "Access Analyzer は、ポリシーの公開結果を検出するためのものです。",
+            "Trusted Advisor は、トレースではなく、ベスト プラクティスのチェックを提供します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html"
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "question": "前処理のために PDF から表、フォーム、テキストを抽出するサービスはどれですか?",
+          "options": [
+            "Amazon Textract",
+            "Amazon Polly",
+            "Amazon Rekognition カスタムラベル",
+            "AWS グルー"
+          ],
+          "answer": 0,
+          "explain": "Amazon Textract は、OCR およびフォーム/テーブルを含む構造化ドキュメントの抽出専用に構築されています。",
+          "whyWrong": [
+            null,
+            "Polly はテキスト読み上げです。",
+            "Rekognition Custom Labels は、画像/ビデオ オブジェクトのラベル付けに使用します。",
+            "Glue は ETL/カタログ サービスであり、OCR 抽出ではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/textract/latest/dg/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 14,
+          "question": "確定的な出力に最適な低分散設定はどれですか?",
+          "options": [
+            "高温 (0.9+)",
+            "低温（0.0～0.3）",
+            "Top-k 最大値のみ",
+            "システムプロンプトが表示されない"
+          ],
+          "answer": 1,
+          "explain": "温度が低いとランダム性が減り、ポリシー/契約出力の一貫性が向上します。",
+          "whyWrong": [
+            "温度が高いほど、創造性と変化が高まります。",
+            null,
+            "Top-k だけでは温度挙動制御に代わるものではありません。",
+            "システム プロンプトは、動作の制約にとって依然として重要です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"
+            }
+          ]
+        },
+        {
+          "n": 15,
+          "question": "SDK およびインフラストラクチャ スニペットには、IDE ネイティブの AWS コーディング アシスタントが必要です。",
+          "options": [
+            "Amazon Q Developer",
+            "Amazon Q Business",
+            "AWS アーティファクト",
+            "CodeCommit 承認ルール"
+          ],
+          "answer": 0,
+          "explain": "Amazon Q Developer は、コード、AWS APIs、開発ワークフローを支援するために IDEs に統合されています。",
+          "whyWrong": [
+            null,
+            "Q Business は、データ ソースを介したエンタープライズ ナレッジ チャット用です。",
+            "Artifact はコーディング支援ではなく、コンプライアンス レポートを提供します。",
+            "承認ルールはリポジトリのガバナンス機能です。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+            }
+          ]
+        },
+        {
+          "n": 16,
+          "question": "プロンプトエンリッチメントジョブと推論ジョブを非同期に分離するには、以下を使用します。",
+          "options": [
+            "Amazon SQS",
+            "AWS WAF",
+            "Amazon Route 53 ヘルスチェック",
+            "AWS 組織"
+          ],
+          "answer": 0,
+          "explain": "Amazon SQS は、プロデューサー サービスとコンシューマー サービス間の分離された非同期処理を有効にします。",
+          "whyWrong": [
+            null,
+            "WAF は Web リクエストをフィルタリングします。それは行列ではありません。",
+            "Route 53 ヘルスチェックは、DNS 可用性メカニズムです。",
+            "組織はアカウントのガバナンスを処理します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 17,
+          "question": "ライフサイクル ルールを備えた不変のプロンプト/レスポンス アーカイブに最も一般的なストレージはどれですか?",
+          "options": [
+            "Amazon S3",
+            "Amazon ElastiCache",
+            "EBS ローカル スナップショットのみ",
+            "Cloud9環境ストレージ"
+          ],
+          "answer": 0,
+          "explain": "Amazon S3 は、ライフサイクル ポリシーとコンプライアンスに配慮したアーカイブ パターンを備えた耐久性の高いオブジェクト ストレージを提供します。",
+          "whyWrong": [
+            null,
+            "ElastiCache はメモリ内にあり、永続的なアーカイブ用ではありません。",
+            "EBS スナップショットはボリューム バックアップであり、プライマリ アーカイブ ワークフローではありません。",
+            "Cloud9 ローカル ストレージは開発環境にとっては一時的なものです。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 18,
+          "question": "カスタムアプリのメトリクスとトークン使用量のアラームを監視するのに最適なサービスは何ですか?",
+          "options": [
+            "CloudWatch メトリクス/アラーム",
+            "AWS シールド アドバンスト",
+            "Amazon Macie",
+            "AWS 予算のみ"
+          ],
+          "answer": 0,
+          "explain": "CloudWatch カスタムメトリクスとアラームは、ランタイム KPI の監視とアラートの標準です。",
+          "whyWrong": [
+            null,
+            "シールドは DDoS 防御です。",
+            "Macie は S3 で機密データを発見します。",
+            "Budgets は支出を追跡しますが、ほぼリアルタイムのアプリ テレメトリではありません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"
+            }
+          ]
+        },
+        {
+          "n": 19,
+          "question": "アプリケーションに一時的な AWS 認証情報を提供する ID サービスはどれですか?",
+          "options": [
+            "AWS STS",
+            "AWS RAM",
+            "AWS IQ",
+            "IAMアクセスアドバイザー"
+          ],
+          "answer": 0,
+          "explain": "AWS STS は、フェデレーションおよびロールベースのアクセス パターン用の一時的なセキュリティ認証情報を発行します。",
+          "whyWrong": [
+            null,
+            "RAM は、資格情報ではなく、アカウント間でリソースを共有します。",
+            "IQ はコンサルティング マーケットプレイスです。",
+            "アクセス アドバイザは、サービスの最終アクセス情報を表示します。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+            }
+          ]
+        },
+        {
+          "n": 20,
+          "question": "VPC ワークロードから Bedrock APIs へのプライベート ネットワーク アクセスが必要です。使用：",
+          "options": [
+            "VPC エンドポイント (PrivateLink がサポートされている場合)",
+            "パブリックNATのみ",
+            "S3 静的 Web サイトエンドポイント",
+            "Route 53 リゾルバー DNS ファイアウォールのみ"
+          ],
+          "answer": 0,
+          "explain": "インターフェイス VPC エンドポイント/PrivateLink パターンは、パブリック インターネットを経由せずにプライベート接続を提供します。",
+          "whyWrong": [
+            null,
+            "NAT は引き続きパブリック エンドポイントに出力されます。",
+            "S3 Web サイトのエンドポイントは、Bedrock API アクセスとは無関係です。",
+            "DNS ファイアウォールはトランスポート接続を作成しません。"
+          ],
+          "refs": [
+            {
+              "label": "AWS ドキュメント",
+              "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

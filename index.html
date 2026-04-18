@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>AWS GenAI Multi-Test Mock Exam Trainer</title>
   <meta name="description" content="AWS GenAI 模擬試験トレーナー。Practice Test 1-5を切り替え、即採点と解説を確認できます。" />
-  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/styles.css?v=2" />
 </head>
 <body>
   <main class="container">
@@ -28,6 +28,12 @@
       </div>
       <div class="nav-panel" id="navPanel" role="region" aria-label="問題ナビゲーター">
         <div class="nav-grid" id="navGrid"></div>
+        <div class="nav-legend" aria-hidden="true">
+          <span><span class="swatch correct"></span>正解済み</span>
+          <span><span class="swatch wrong"></span>不正解</span>
+          <span><span class="swatch unanswered"></span>未回答</span>
+          <span><span class="swatch current"></span>現在の問題</span>
+        </div>
       </div>
 
       <div class="meta">
